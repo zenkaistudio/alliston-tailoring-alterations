@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alliston Tailoring & Alterations</title>
+  <meta name="description" content="Precision alterations, bespoke fitting, and garment restoration in Alliston, Ontario. Est. 2008." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET & ROOT ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #111110;
+      --bg-card:  #191614;
+      --bg-hover: #201D19;
+      --beige:    #CEC6BB;
+      --sage:     #B83232;
+      --dim:      #6B6360;
+      --white:    #F0EBE4;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+
+    body {
+      background: var(--bg);
+      color: var(--beige);
+      font-family: var(--sans);
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE ─────────────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.035; pointer-events: none; z-index: 9999;
+    }
+
+    /* ─── CUSTOM CURSOR ─────────────────────────────────────────────────── */
+    .cursor {
+      position: fixed; width: 8px; height: 8px; background: var(--beige);
+      border-radius: 50%; pointer-events: none; z-index: 10000;
+      transform: translate(-50%, -50%); transition: width .2s, height .2s, background .2s;
+    }
+    .cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(205,198,190,.4); border-radius: 50%;
+      pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+      transition: all .12s ease-out;
+    }
+    body.hovering .cursor { width: 14px; height: 14px; background: var(--sage); }
+    body.hovering .cursor-ring { width: 52px; height: 52px; border-color: var(--sage); }
+
+    /* ─── TOP BAR ───────────────────────────────────────────────────────── */
+    .topbar {
+      background: var(--bg-card);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px clamp(24px, 5vw, 72px);
+      font-size: clamp(10px, 0.85vw, 12px);
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .topbar-left {
+      display: flex; gap: clamp(20px, 3vw, 40px); align-items: center;
+    }
+    .topbar-left a {
+      color: var(--dim); text-decoration: none; transition: color .2s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .topbar-left a:hover { color: var(--beige); }
+    .topbar-left a svg { width: 11px; height: 11px; fill: var(--sage); flex-shrink: 0; }
+    .topbar-location { display: none; }
+    @media (min-width: 1100px) { .topbar-location { display: flex !important; } }
+    .topbar-right a {
+      font-size: clamp(9px, 0.75vw, 11px); letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--bg); background: var(--sage);
+      padding: 6px 18px; text-decoration: none; transition: background .25s;
+    }
+    .topbar-right a:hover { background: var(--beige); }
+
+    /* ─── LOCATION BAR ───────────────────────────────────────────────────── */
+    .location-bar {
+      background: var(--bg); border-bottom: 1px solid rgba(205,198,190,.08);
+      padding: clamp(14px,2vh,20px) clamp(24px,5vw,72px);
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      flex-wrap: wrap;
+    }
+    .location-bar-left {
+      display: flex; align-items: center; gap: clamp(32px,4vw,60px); flex-wrap: wrap;
+    }
+    .location-item {
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .location-item-icon {
+      width: 18px; height: 18px; fill: var(--sage); flex-shrink: 0; margin-top: 1px;
+    }
+    .location-item-label {
+      font-family: var(--sans); font-size: clamp(8px,.7vw,10px);
+      letter-spacing: .25em; text-transform: uppercase; color: var(--sage);
+      margin-bottom: 3px;
+    }
+    .location-item-value {
+      font-family: var(--sans); font-size: clamp(12px,1vw,14px);
+      font-weight: 400; color: var(--beige);
+    }
+    .location-item-sub {
+      font-size: clamp(10px,.85vw,12px); color: var(--dim); margin-top: 1px;
+    }
+    .location-bar-cta {
+      display: flex; align-items: center; gap: 8px;
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .22em; text-transform: uppercase;
+      color: var(--sage); text-decoration: none; flex-shrink: 0;
+      border: 1px solid rgba(184,50,50,.25); padding: 8px 20px;
+      transition: background .25s, color .25s;
+    }
+    .location-bar-cta:hover { background: var(--sage); color: var(--bg); }
+    .location-bar-cta svg { width: 12px; height: 12px; }
+    @media (max-width: 640px) { .location-bar { display: none; } }
+
+    /* ─── NAV ───────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: clamp(16px, 2vw, 24px) clamp(24px, 5vw, 72px);
+      background: rgba(29,29,27,.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(205,198,190,.06);
+      transition: backdrop-filter .3s;
+    }
+
+    .nav-logo {
+      text-decoration: none; display: flex; align-items: center;
+      background: #fff; padding: 5px 12px; border-radius: 3px;
+    }
+    .nav-logo img {
+      height: clamp(32px, 3.2vw, 46px); width: auto; display: block;
+    }
+
+    .nav-links {
+      display: flex; gap: clamp(20px, 2.5vw, 40px); list-style: none; align-items: center;
+    }
+    .nav-links > li { position: relative; }
+    .nav-links a {
+      font-family: var(--sans); font-size: clamp(10px, 0.9vw, 12px); font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--beige);
+      text-decoration: none; position: relative; padding-bottom: 3px; transition: color .25s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: var(--sage);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform .4s cubic-bezier(.76,0,.24,1);
+    }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-links a:hover { color: var(--white); }
+
+    /* Services dropdown */
+    .nav-has-dropdown > a::before {
+      content: '▾'; position: absolute; right: -12px; top: 0;
+      font-size: 8px; color: var(--sage);
+    }
+    .nav-dropdown {
+      position: absolute; top: calc(100% + 16px); left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card); border: 1px solid rgba(205,198,190,.1);
+      min-width: 220px; padding: 8px 0;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      transform: translateX(-50%) translateY(-6px);
+    }
+    .nav-has-dropdown:hover .nav-dropdown {
+      opacity: 1; visibility: visible; pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-dropdown a {
+      display: block; padding: 10px 20px; font-size: clamp(9px, 0.8vw, 11px);
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim);
+      white-space: nowrap; transition: color .2s, padding-left .2s;
+    }
+    .nav-dropdown a::after { display: none; }
+    .nav-dropdown a:hover { color: var(--beige); padding-left: 26px; }
+
+    .nav-book {
+      font-family: var(--sans); font-size: clamp(9px, 0.8vw, 11px);
+      font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--bg) !important; background: var(--beige);
+      padding: 10px 22px; text-decoration: none;
+      transition: background .25s, color .25s; white-space: nowrap;
+    }
+    .nav-book:hover { background: var(--sage); color: var(--bg) !important; }
+    .nav-book::after { display: none !important; }
+
+    /* ─── HERO ──────────────────────────────────────────────────────────── */
+    .hero {
+      display: grid; grid-template-columns: 55fr 45fr;
+      min-height: 100vh; overflow: hidden;
+    }
+    .hero-left {
+      position: relative; overflow: hidden; min-width: 0;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 clamp(24px, 5vw, 72px) clamp(48px, 8vh, 100px);
+    }
+    .hero-bg {
+      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    }
+    .hero-photo-panel {
+      position: relative; overflow: hidden; min-width: 0;
+    }
+    .hero-photo-panel img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: brightness(.9) saturate(1.05) contrast(1.05);
+    }
+    .hero-photo-panel::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, var(--bg) 0%, var(--bg) 5%, transparent 55%),
+                  linear-gradient(to top, var(--bg) 0%, transparent 28%);
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-photo-panel { display: none; }
+    }
+    .hero-bg::before, .hero-bg::after {
+      content: ''; position: absolute; inset: -50%;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(205,198,190,.018) 60px, rgba(205,198,190,.018) 61px);
+      animation: drift 28s linear infinite;
+    }
+    .hero-bg::after {
+      background: repeating-linear-gradient(45deg, transparent, transparent 80px, rgba(184,50,50,.012) 80px, rgba(184,50,50,.012) 81px);
+      animation-duration: 40s; animation-direction: reverse;
+    }
+    @keyframes drift {
+      from { transform: translate(0,0); }
+      to   { transform: translate(60px,60px); }
+    }
+    .hero-glow { display: none; }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-logo-watermark {
+      position: absolute;
+      top: 38%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(92%, 560px);
+      z-index: 0; pointer-events: none;
+    }
+    .hero-logo-watermark img {
+      width: 100%; display: block;
+      filter: invert(1) hue-rotate(180deg) contrast(1.5);
+      mix-blend-mode: screen;
+      opacity: 0.85;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 52%; z-index: 1; pointer-events: none;
+      background: linear-gradient(to top, var(--bg) 42%, transparent 100%);
+    }
+    .hero-credentials {
+      position: absolute;
+      top: clamp(24px, 4vh, 48px);
+      left: clamp(24px, 5vw, 72px);
+      z-index: 2;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .hero-cred-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(205,198,190,.15);
+      background: rgba(17,17,16,.55);
+      backdrop-filter: blur(8px);
+      padding: 10px 16px;
+      border-radius: 2px;
+      width: fit-content;
+    }
+    .hero-cred-icon {
+      color: var(--sage); font-size: 14px; flex-shrink: 0;
+    }
+    .hero-cred-text {
+      display: flex; flex-direction: column; gap: 1px;
+    }
+    .hero-cred-title {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--white);
+    }
+    .hero-cred-sub {
+      font-family: var(--sans); font-size: 10px; color: var(--dim);
+      letter-spacing: .04em;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--sans); font-size: clamp(10px,.85vw,13px);
+      letter-spacing: .3em; text-transform: uppercase; color: var(--sage);
+      margin-bottom: clamp(16px,2.5vh,28px);
+      opacity: 0; animation: fadeUp .8s ease forwards; animation-delay: .2s;
+    }
+    .hero-headline {
+      font-family: var(--serif); font-weight: 300;
+      line-height: 0.92; letter-spacing: -.02em; overflow: hidden;
+    }
+    .hero-line {
+      display: block; opacity: 0;
+      animation: fadeUp 1s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hero-line:nth-child(1) {
+      font-size: clamp(72px,9vw,140px); color: var(--beige); animation-delay: .45s;
+    }
+    .hero-line:nth-child(2) {
+      font-size: clamp(72px,9vw,140px); font-style: italic; color: var(--white); animation-delay: .65s;
+    }
+    .hero-sub {
+      margin-top: clamp(24px,3.5vh,48px); max-width: 520px;
+      font-size: clamp(13px,1.3vw,17px); font-weight: 300; color: var(--dim); line-height: 1.75;
+      opacity: 0; animation: fadeUp 1s ease forwards; animation-delay: .95s;
+    }
+    .hero-sub em { color: var(--beige); font-style: normal; }
+    .hero-cta-row {
+      display: flex; align-items: center; gap: 36px;
+      margin-top: clamp(32px,5vh,56px);
+      opacity: 0; animation: fadeUp 1s ease forwards; animation-delay: 1.2s;
+    }
+    .btn-primary {
+      display: inline-block; padding: 14px 36px;
+      font-family: var(--sans); font-size: clamp(10px,.9vw,12px);
+      font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--bg); background: var(--beige); text-decoration: none;
+      transition: background .3s, transform .3s;
+    }
+    .btn-primary:hover { background: var(--sage); transform: translateY(-2px); }
+    .btn-ghost {
+      font-family: var(--sans); font-size: clamp(10px,.9vw,12px);
+      font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; position: relative; padding-bottom: 2px;
+      transition: color .3s;
+    }
+    .btn-ghost::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: currentColor;
+      transform: scaleX(1); transform-origin: left; transition: transform .4s cubic-bezier(.76,0,.24,1);
+    }
+    .btn-ghost:hover { color: var(--beige); }
+
+    .hero-scroll {
+      position: absolute; right: clamp(24px,5vw,72px); bottom: clamp(48px,8vh,100px);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 1.8s; z-index: 3;
+    }
+    .hero-scroll span {
+      font-size: 9px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--dim); writing-mode: vertical-rl;
+    }
+    .scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--dim), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: .3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ─── KEYFRAMES ─────────────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    /* ─── TRUST MARQUEE ─────────────────────────────────────────────────── */
+    .marquee-wrap {
+      border-top: 1px solid rgba(205,198,190,.1);
+      border-bottom: 1px solid rgba(205,198,190,.1);
+      overflow: hidden; padding: clamp(14px,1.8vh,22px) 0; background: var(--bg-card);
+    }
+    .marquee-track {
+      display: flex; width: max-content; animation: marquee 32s linear infinite;
+    }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item {
+      font-family: var(--sans); font-size: clamp(10px,0.9vw,13px);
+      font-weight: 400; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--beige); white-space: nowrap; padding: 0 clamp(20px,2.5vw,40px);
+    }
+    .marquee-dot { color: var(--sage); margin: 0 8px; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── FEATURE BOXES ─────────────────────────────────────────────────── */
+    .feature-boxes-wrap {
+      overflow: hidden; background: var(--bg);
+      border-bottom: 1px solid rgba(205,198,190,.08);
+      padding: clamp(40px,6vh,64px) 0;
+    }
+    .feature-boxes-track {
+      display: flex; width: max-content; gap: 16px;
+      animation: feature-scroll 40s linear infinite;
+    }
+    .feature-boxes-wrap:hover .feature-boxes-track { animation-play-state: paused; }
+    @keyframes feature-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .feature-box {
+      flex-shrink: 0; width: 195px;
+      border: 1px solid rgba(205,198,190,.12); background: var(--bg-card);
+      padding: 28px 24px; display: flex; flex-direction: column; gap: 14px;
+      transition: border-color .3s, background .3s;
+    }
+    .feature-box:hover { border-color: rgba(184,50,50,.35); background: var(--bg-hover); }
+    .feature-box-icon { width: 26px; height: 26px; color: var(--sage); }
+    .feature-box-title {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(17px,1.6vw,23px); color: var(--white); line-height: 1.2;
+    }
+    .feature-box-tag {
+      font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim);
+    }
+
+    /* ─── REVIEWS CAROUSEL ───────────────────────────────────────────────── */
+    .reviews-carousel-wrap {
+      overflow: hidden; margin: 0 calc(-1 * clamp(24px,5vw,72px));
+    }
+    .reviews-carousel-track {
+      display: flex; gap: 20px; padding: 4px 0; width: max-content;
+      animation: reviews-scroll 50s linear infinite;
+    }
+    .reviews-carousel-track:hover { animation-play-state: paused; }
+    @keyframes reviews-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .review-slide {
+      flex-shrink: 0; width: clamp(300px,30vw,400px);
+      background: var(--bg-card); border: 1px solid rgba(205,198,190,.08);
+      padding: clamp(24px,3vw,36px); display: flex; flex-direction: column; gap: 16px;
+      transition: border-color .3s;
+    }
+    .review-slide:hover { border-color: rgba(184,50,50,.2); }
+    .review-slide-stars { color: var(--sage); font-size: 13px; letter-spacing: 3px; }
+    .review-slide-text {
+      font-family: var(--serif); font-size: clamp(14px,1.25vw,18px);
+      font-weight: 300; font-style: italic; color: var(--beige); line-height: 1.65; flex: 1;
+    }
+    .review-slide-footer {
+      border-top: 1px solid rgba(205,198,190,.08); padding-top: 12px;
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 10px;
+    }
+    .review-slide-meta { display: flex; flex-direction: column; gap: 2px; }
+    .review-slide-name { font-size: 13px; font-weight: 500; color: var(--white); letter-spacing: .05em; }
+    .review-slide-service { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+    .review-slide-g {
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim);
+      white-space: nowrap; display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+    }
+    .review-g-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #4285f4; color: #fff; font-size: 9px; font-weight: 700;
+    }
+
+    /* ─── SECTION COMMONS ───────────────────────────────────────────────── */
+    section { padding: clamp(80px,12vh,140px) clamp(24px,5vw,72px); }
+    .section-label {
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .35em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: clamp(12px,2vh,20px);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .section-label::after {
+      content: ''; display: block; height: 1px; width: 36px; background: var(--sage);
+    }
+    .section-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(36px,4.5vw,68px); color: var(--white);
+      line-height: 1.05; letter-spacing: -.02em;
+      margin-bottom: clamp(40px,6vh,64px);
+    }
+    .section-headline em { font-style: italic; color: var(--beige); }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
+    .reveal-delay-6 { transition-delay: .6s; }
+
+    /* ─── SERVICES GRID ─────────────────────────────────────────────────── */
+    .services { background: var(--bg); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(205,198,190,.07);
+      border: 1px solid rgba(205,198,190,.07);
+    }
+    .service-card {
+      background: var(--bg-card);
+      padding: 0;
+      display: flex; flex-direction: column;
+      transition: background .35s, transform .35s; cursor: default;
+      text-decoration: none; overflow: hidden;
+    }
+    .service-card:hover { background: var(--bg-hover); transform: translateY(-3px); }
+    .service-card-img {
+      height: 175px; overflow: hidden; flex-shrink: 0;
+    }
+    .service-card-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: brightness(.68) saturate(.75);
+      transition: transform .6s cubic-bezier(.16,1,.3,1), filter .45s;
+    }
+    .service-card:hover .service-card-img img {
+      transform: scale(1.06); filter: brightness(.85) saturate(.9);
+    }
+    .service-card-body {
+      padding: clamp(22px,2.6vw,34px) clamp(28px,3.5vw,44px);
+      display: flex; flex-direction: column; gap: 14px; flex: 1;
+    }
+    .service-icon {
+      width: 24px; height: 24px; color: var(--sage); flex-shrink: 0;
+    }
+    .service-num {
+      font-family: var(--sans); font-size: clamp(9px,.8vw,11px);
+      font-weight: 300; letter-spacing: .2em; color: var(--sage);
+    }
+    .service-name {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(22px,2.4vw,34px); color: var(--white); line-height: 1.1;
+    }
+    .service-desc {
+      font-size: clamp(12px,1.1vw,14px); font-weight: 300; color: var(--dim);
+      line-height: 1.7; margin-top: auto; padding-top: 12px;
+      border-top: 1px solid rgba(205,198,190,.1);
+    }
+    .service-link {
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .22em; text-transform: uppercase;
+      color: var(--sage); margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+      transition: gap .2s;
+    }
+    .service-card:hover .service-link { gap: 10px; }
+
+    /* ─── VALUE PROPOSITIONS ────────────────────────────────────────────── */
+    .value-props {
+      background: var(--bg-card);
+      border-top: 1px solid rgba(205,198,190,.07);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+    }
+    .value-props-inner {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: clamp(32px,5vw,72px); align-items: start;
+    }
+    .value-prop {
+      display: flex; flex-direction: column; gap: 14px;
+      padding: clamp(32px,4vw,52px) 0;
+      border-right: 1px solid rgba(205,198,190,.08);
+      padding-right: clamp(32px,4vw,60px);
+    }
+    .value-prop:last-child { border-right: none; padding-right: 0; }
+    .value-prop-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+    }
+    .value-prop-title {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(22px,2.4vw,34px); color: var(--white); line-height: 1.1;
+    }
+    .value-prop-desc {
+      font-size: clamp(12px,1.1vw,15px); font-weight: 300; color: var(--dim); line-height: 1.75;
+    }
+    .value-prop-cta {
+      display: inline-block; margin-top: 8px;
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .22em; text-transform: uppercase;
+      color: var(--sage); text-decoration: none; transition: color .2s;
+    }
+    .value-prop-cta:hover { color: var(--beige); }
+
+    /* ─── REVIEWS ───────────────────────────────────────────────────────── */
+    .reviews {
+      background: var(--bg);
+      border-top: 1px solid rgba(205,198,190,.07);
+    }
+    .reviews-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: clamp(48px,7vh,80px); flex-wrap: wrap; gap: 24px;
+    }
+    .reviews-badge {
+      display: flex; align-items: center; gap: clamp(20px,3vw,36px);
+    }
+    .reviews-rating-block { display: flex; flex-direction: column; gap: 6px; }
+    .reviews-label {
+      font-family: var(--sans); font-size: clamp(9px,.75vw,11px);
+      letter-spacing: .3em; text-transform: uppercase; color: var(--sage);
+    }
+    .reviews-score {
+      font-family: var(--serif); font-size: clamp(48px,6vw,88px);
+      font-weight: 300; color: var(--white); line-height: 1;
+    }
+    .reviews-stars { color: var(--sage); font-size: 18px; letter-spacing: 3px; }
+    .reviews-count {
+      font-size: clamp(11px,.95vw,14px); color: var(--dim); font-weight: 300;
+    }
+    .reviews-source {
+      font-size: clamp(10px,.85vw,12px); letter-spacing: .15em; text-transform: uppercase;
+      color: var(--dim); padding-left: clamp(20px,2.5vw,36px);
+      border-left: 1px solid rgba(205,198,190,.12);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%,300px),1fr));
+      gap: clamp(16px,2vw,24px);
+    }
+    .testimonial-card {
+      background: var(--bg-card); border: 1px solid rgba(205,198,190,.08);
+      padding: clamp(28px,3.5vw,44px);
+      display: flex; flex-direction: column; gap: 20px;
+      transition: border-color .3s, background .3s;
+    }
+    .testimonial-card:hover { border-color: rgba(184,50,50,.2); background: var(--bg-hover); }
+    .testimonial-quote-mark {
+      font-family: var(--serif); font-size: 52px; line-height: .5;
+      color: var(--sage); opacity: .5;
+    }
+    .testimonial-body {
+      font-family: var(--serif); font-size: clamp(15px,1.4vw,20px);
+      font-weight: 300; font-style: italic; color: var(--beige); line-height: 1.65;
+    }
+    .testimonial-author {
+      display: flex; flex-direction: column; gap: 4px;
+      margin-top: auto; padding-top: 20px;
+      border-top: 1px solid rgba(205,198,190,.08);
+    }
+    .author-name {
+      font-size: clamp(12px,1vw,14px); font-weight: 500;
+      letter-spacing: .08em; color: var(--white);
+    }
+    .author-detail {
+      font-size: clamp(10px,.85vw,12px); letter-spacing: .12em;
+      text-transform: uppercase; color: var(--dim);
+    }
+
+    /* ─── GALLERY ───────────────────────────────────────────────────────── */
+    .gallery {
+      background: var(--bg);
+      border-top: 1px solid rgba(205,198,190,.07);
+      padding-bottom: clamp(80px,12vh,140px);
+    }
+    .gallery-header {
+      padding: clamp(80px,12vh,140px) clamp(24px,5vw,72px) clamp(40px,5vh,64px);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 6px; padding: 0 clamp(24px,5vw,72px);
+    }
+    .gallery-item {
+      position: relative; overflow: hidden; background: var(--bg-card);
+      aspect-ratio: 1; cursor: pointer;
+    }
+    .gallery-item:nth-child(4n+1) { grid-column: span 2; aspect-ratio: unset; height: 340px; }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .6s cubic-bezier(.16,1,.3,1), filter .4s;
+      filter: brightness(.9) saturate(.8);
+    }
+    .gallery-item:hover img { transform: scale(1.04); filter: brightness(1) saturate(1); }
+    .gallery-item-overlay {
+      position: absolute; inset: 0; background: rgba(29,29,27,.5);
+      opacity: 0; transition: opacity .3s;
+      display: flex; align-items: flex-end; padding: 18px;
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-item-caption {
+      font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--beige);
+    }
+
+    /* ─── PRICING ───────────────────────────────────────────────────────── */
+    .pricing {
+      background: var(--bg-card);
+      border-top: 1px solid rgba(205,198,190,.07);
+    }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,220px),1fr));
+      gap: 1px; background: rgba(205,198,190,.07);
+      border: 1px solid rgba(205,198,190,.07);
+      margin-top: clamp(40px,6vh,64px);
+    }
+    .pricing-card {
+      background: var(--bg); padding: clamp(32px,4vw,52px) clamp(24px,3vw,40px);
+      display: flex; flex-direction: column; gap: 12px;
+      transition: background .3s;
+    }
+    .pricing-card:hover { background: var(--bg-hover); }
+    .pricing-service {
+      font-family: var(--sans); font-size: clamp(9px,.8vw,11px);
+      letter-spacing: .25em; text-transform: uppercase; color: var(--sage);
+    }
+    .pricing-name {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(22px,2.4vw,34px); color: var(--white); line-height: 1.1;
+    }
+    .pricing-from {
+      font-size: clamp(10px,.85vw,12px); letter-spacing: .15em;
+      text-transform: uppercase; color: var(--dim); margin-top: 4px;
+    }
+    .pricing-price {
+      font-family: var(--serif); font-size: clamp(36px,4vw,56px);
+      font-weight: 300; color: var(--beige); line-height: 1;
+    }
+    .pricing-price sup {
+      font-size: .45em; vertical-align: super; color: var(--dim);
+    }
+    .pricing-desc {
+      font-size: clamp(11px,1vw,13px); font-weight: 300; color: var(--dim);
+      line-height: 1.6; margin-top: auto; padding-top: 16px;
+      border-top: 1px solid rgba(205,198,190,.08);
+    }
+    .pricing-note {
+      margin-top: clamp(24px,3vh,36px); text-align: center;
+      font-size: clamp(11px,.9vw,13px); font-weight: 300; color: var(--dim);
+      font-style: italic;
+    }
+
+    /* ─── PROMISES ──────────────────────────────────────────────────────── */
+    .promises {
+      background: var(--bg);
+      border-top: 1px solid rgba(205,198,190,.07);
+    }
+    .promises-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: rgba(205,198,190,.07);
+      border: 1px solid rgba(205,198,190,.07);
+      margin-top: clamp(40px,6vh,64px);
+    }
+    .promise-card {
+      background: var(--bg-card);
+      padding: clamp(32px,4vw,52px) clamp(24px,3vw,36px);
+      display: flex; flex-direction: column; gap: 16px;
+      transition: background .3s;
+    }
+    .promise-card:hover { background: var(--bg-hover); }
+    .promise-icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .promise-title {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(20px,2.2vw,30px); color: var(--white); line-height: 1.1;
+    }
+    .promise-desc {
+      font-size: clamp(12px,1.1vw,14px); font-weight: 300; color: var(--dim); line-height: 1.7;
+    }
+
+    /* ─── CONTACT / BOOKING CTA ─────────────────────────────────────────── */
+    .contact {
+      border-top: 1px solid rgba(205,198,190,.08);
+      background: var(--bg-card);
+      text-align: center;
+    }
+    .contact-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(40px,6vw,96px); color: var(--white);
+      line-height: 1; letter-spacing: -.02em;
+      margin-bottom: clamp(24px,4vh,44px);
+    }
+    .contact-headline em { font-style: italic; color: var(--beige); }
+    .contact-btn-wrap { margin-bottom: clamp(48px,8vh,80px); }
+    .contact-info {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: clamp(24px,4vw,56px); margin-bottom: clamp(32px,5vh,52px);
+    }
+    .contact-item { display: flex; flex-direction: column; gap: 6px; text-align: center; }
+    .contact-label {
+      font-size: clamp(9px,.75vw,11px); letter-spacing: .3em;
+      text-transform: uppercase; color: var(--sage);
+    }
+    .contact-value {
+      font-size: clamp(13px,1.2vw,16px); font-weight: 300; color: var(--beige);
+    }
+    .contact-value a { color: inherit; text-decoration: none; transition: color .2s; }
+    .contact-value a:hover { color: var(--white); }
+    .hours-grid {
+      display: inline-grid; grid-template-columns: 1fr 1fr;
+      gap: 8px 40px; margin-top: clamp(28px,4vh,44px); text-align: left;
+    }
+    .hours-row { display: contents; }
+    .hours-day {
+      font-size: clamp(11px,.9vw,13px); letter-spacing: .1em;
+      text-transform: uppercase; color: var(--dim);
+    }
+    .hours-time { font-size: clamp(11px,.9vw,13px); color: var(--beige); }
+
+    /* ─── FOOTER ────────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(205,198,190,.08); background: var(--bg);
+    }
+    .footer-marquee-wrap {
+      overflow: hidden; padding: clamp(12px,1.5vh,18px) 0;
+      border-bottom: 1px solid rgba(205,198,190,.06);
+    }
+    .footer-marquee-track {
+      display: flex; width: max-content; animation: marquee 55s linear infinite;
+    }
+    .footer-marquee-item {
+      font-family: var(--serif); font-size: clamp(11px,1vw,14px);
+      font-weight: 300; letter-spacing: .1em; color: var(--dim);
+      white-space: nowrap; padding: 0 clamp(16px,2vw,32px);
+    }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: clamp(20px,3vh,32px) clamp(24px,5vw,72px); flex-wrap: wrap; gap: 16px;
+    }
+    .footer-copy {
+      font-size: clamp(10px,.85vw,12px); letter-spacing: .1em; color: var(--dim);
+    }
+    .footer-socials { display: flex; gap: 24px; }
+    .footer-socials a {
+      font-size: clamp(10px,.85vw,12px); letter-spacing: .15em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; position: relative; padding-bottom: 2px;
+      transition: color .2s;
+    }
+    .footer-socials a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: var(--sage);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform .35s cubic-bezier(.76,0,.24,1);
+    }
+    .footer-socials a:hover { color: var(--beige); }
+    .footer-socials a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    /* ─── MOBILE ────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .cursor, .cursor-ring { display: none; }
+      .topbar { display: none; }
+      nav { padding: 14px 20px; position: sticky; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 10px; letter-spacing: .12em; }
+      .nav-has-dropdown > a::before { display: none; }
+      .nav-dropdown { display: none; }
+      .nav-book { padding: 8px 14px; font-size: 9px; }
+
+      .hero { padding: 0 20px 60px; }
+      .hero-scroll { display: none; }
+
+      .services-grid { grid-template-columns: 1fr; }
+      .value-props-inner { grid-template-columns: 1fr; }
+      .value-prop { border-right: none; padding-right: 0; border-bottom: 1px solid rgba(205,198,190,.08); padding-bottom: clamp(28px,4vh,40px); }
+      .value-prop:last-child { border-bottom: none; }
+
+      .reviews-header { flex-direction: column; align-items: flex-start; }
+      .reviews-source { border-left: none; padding-left: 0; }
+
+      .gallery-grid { grid-template-columns: repeat(2,1fr); }
+      .gallery-item:nth-child(4n+1) { grid-column: span 1; height: auto; aspect-ratio: 1; }
+
+      .pricing-grid { grid-template-columns: repeat(2,1fr); }
+      .promises-grid { grid-template-columns: repeat(2,1fr); }
+
+      .contact-info { gap: 20px; }
+      .hours-grid { grid-template-columns: auto auto; gap: 6px 24px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:nth-child(4n+1) { grid-column: span 1; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .promises-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 12px; }
+      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+    }
+
+    /* ─── NEWSLETTER STRIP ───────────────────────────────────────────────── */
+    .newsletter {
+      background: var(--bg-card);
+      border-top: 1px solid rgba(205,198,190,.07);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+      padding: clamp(48px,7vh,80px) var(--gutter);
+      text-align: center;
+    }
+    .newsletter-label {
+      font-family: var(--sans); font-size: 10px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--sage); margin-bottom: 16px;
+    }
+    .newsletter-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(28px,3.5vw,48px); color: var(--white);
+      line-height: 1.15; margin-bottom: 12px;
+    }
+    .newsletter-headline em { font-style: italic; color: var(--sage); }
+    .newsletter-sub {
+      font-size: clamp(12px,1.1vw,14px); color: var(--dim); margin-bottom: 36px;
+    }
+    .newsletter-form {
+      display: flex; gap: 0; max-width: 460px; margin: 0 auto;
+      border: 1px solid rgba(205,198,190,.15); border-radius: 2px; overflow: hidden;
+    }
+    .newsletter-input {
+      flex: 1; background: rgba(255,255,255,.04); border: none; outline: none;
+      padding: 14px 20px; font-family: var(--sans); font-size: 13px;
+      color: var(--white); min-width: 0;
+    }
+    .newsletter-input::placeholder { color: var(--dim); }
+    .newsletter-btn {
+      background: var(--sage); color: var(--bg); border: none; cursor: pointer;
+      padding: 14px 24px; font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .newsletter-btn:hover { opacity: .85; }
+    .newsletter-note {
+      font-size: 11px; color: var(--dim); margin-top: 14px; opacity: .7;
+    }
+    .newsletter-success {
+      display: none; font-family: var(--serif); font-size: 20px; color: var(--sage);
+      margin-top: 8px;
+    }
+
+    /* ─── MAP SECTION ────────────────────────────────────────────────────── */
+    .map-section {
+      background: var(--bg);
+      border-top: 1px solid rgba(205,198,190,.07);
+      padding: clamp(48px,7vh,80px) var(--gutter);
+    }
+    .map-section-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(32px,5vw,72px);
+      align-items: center;
+    }
+    .map-info-label {
+      font-family: var(--sans); font-size: 10px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--sage); margin-bottom: 16px;
+    }
+    .map-info-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(28px,3vw,42px); color: var(--white);
+      line-height: 1.15; margin-bottom: 28px;
+    }
+    .map-info-headline em { font-style: italic; }
+    .map-details { display: flex; flex-direction: column; gap: 20px; }
+    .map-detail-row { display: flex; align-items: flex-start; gap: 14px; }
+    .map-detail-icon {
+      color: var(--sage); font-size: 16px; flex-shrink: 0; margin-top: 2px;
+    }
+    .map-detail-label {
+      font-family: var(--sans); font-size: 10px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 4px;
+    }
+    .map-detail-value {
+      font-size: 14px; color: var(--white); line-height: 1.5;
+    }
+    .map-detail-value a { color: var(--white); text-decoration: none; }
+    .map-detail-value a:hover { color: var(--sage); }
+    .map-frame-wrap {
+      border: 1px solid rgba(205,198,190,.1);
+      border-radius: 2px; overflow: hidden; aspect-ratio: 4/3; line-height: 0;
+    }
+    .map-frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+    @media (max-width: 768px) {
+      .map-section-inner { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; border-radius: 2px; }
+      .newsletter-btn { border-radius: 0 0 2px 2px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ─── TOP BAR ──────────────────────────────────────────────────────── -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="tel:+17052508500">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.45 11.45 0 003.58.57 1 1 0 011 1V21a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.45 11.45 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+        (705) 250-8500
+      </a>
+      <a href="mailto:allistontailoring@gmail.com">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        allistontailoring@gmail.com
+      </a>
+      <a href="https://maps.google.com/?q=54+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="topbar-location">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        54 Victoria St E, Alliston
+      </a>
+    </div>
+    <div class="topbar-right">
+      <a href="#contact">Book Now</a>
+    </div>
+  </div>
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="logo.jpg" alt="Alliston Tailoring & Alterations" />
+    </a>
+    <ul class="nav-links">
+      <li class="nav-has-dropdown">
+        <a href="#services">Services</a>
+        <div class="nav-dropdown">
+          <a href="#services">Formalwear &amp; Bridal</a>
+          <a href="#services">Hemming</a>
+          <a href="#services">Resizing &amp; Alterations</a>
+          <a href="#services">Suit Tailoring</a>
+          <a href="#services">Zipper &amp; Repairs</a>
+          <a href="#services">Leather Work</a>
+        </div>
+      </li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Our Work</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact" class="nav-book">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── LOCATION BAR ────────────────────────────────────────────────── -->
+  <div class="location-bar">
+    <div class="location-bar-left">
+      <div class="location-item">
+        <svg class="location-item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div>
+          <div class="location-item-label">Our Studio</div>
+          <div class="location-item-value">54 Victoria St E, Alliston, ON</div>
+          <div class="location-item-sub">Free parking · Walk-ins welcome</div>
+        </div>
+      </div>
+      <div class="location-item">
+        <svg class="location-item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zm.5-17v6H17l-4.5 7V11H8l4.5-7z"/></svg>
+        <div>
+          <div class="location-item-label">Hours</div>
+          <div class="location-item-value">Mon – Sat: 10am – 6pm</div>
+          <div class="location-item-sub">Closed Sundays &amp; holidays</div>
+        </div>
+      </div>
+      <div class="location-item">
+        <svg class="location-item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <div>
+          <div class="location-item-label">Readers' Choice</div>
+          <div class="location-item-value">Platinum Award 2025</div>
+          <div class="location-item-sub">Best Men's Fashion · New Tecumseth</div>
+        </div>
+      </div>
+    </div>
+    <a href="https://maps.google.com/?q=54+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="location-bar-cta">
+      Get Directions
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <div class="hero-bg"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-credentials">
+        <div class="hero-cred-pill">
+          <span class="hero-cred-icon">★</span>
+          <div class="hero-cred-text">
+            <span class="hero-cred-title">Readers' Choice Platinum</span>
+            <span class="hero-cred-sub">Simcoe County · 2025</span>
+          </div>
+        </div>
+        <div class="hero-cred-pill">
+          <span class="hero-cred-icon">★★★★★</span>
+          <div class="hero-cred-text">
+            <span class="hero-cred-title">Google Rated 4.9</span>
+            <span class="hero-cred-sub">500+ happy customers</span>
+          </div>
+        </div>
+        <div class="hero-cred-pill">
+          <span class="hero-cred-icon">✦</span>
+          <div class="hero-cred-text">
+            <span class="hero-cred-title">Family-Run Since 2008</span>
+            <span class="hero-cred-sub">Alliston's trusted alterations studio</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-logo-watermark" aria-hidden="true">
+        <img src="logo_graphic.png" alt="" />
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">Alliston, Ontario · Est. 2008</p>
+        <h1 class="hero-headline">
+          <span class="hero-line">We Make</span>
+          <span class="hero-line">It <em style="color:var(--sage)">Fit.</em></span>
+        </h1>
+        <p class="hero-sub">
+          Precision alterations and bespoke fitting from <em>a family-run studio</em> that's been trusted by Alliston since 2008. Every stitch, done right.
+        </p>
+        <div class="hero-cta-row">
+          <a href="#contact" class="btn-primary">Book a Fitting</a>
+          <a href="#services" class="btn-ghost">Explore Services →</a>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+    <div class="hero-photo-panel">
+      <img src="gallery/photo_19.jpg" alt="Bridal alterations craftsmanship" />
+    </div>
+  </section>
+
+  <!-- ─── TRUST MARQUEE ────────────────────────────────────────────────── -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">30-Day Fit Guarantee<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Rush Services Available<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Readers' Choice 2025 — Platinum Award<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Free Consultations<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">All Garments Welcome<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Locally Owned &amp; Operated<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Best Men's Fashion · New Tecumseth 2025<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Est. 2008 · Alliston, Ontario<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Bridal Specialists<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Walk-Ins Welcome<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">30-Day Fit Guarantee<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Rush Services Available<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Readers' Choice 2025 — Platinum Award<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Free Consultations<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">All Garments Welcome<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Locally Owned &amp; Operated<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Best Men's Fashion · New Tecumseth 2025<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Est. 2008 · Alliston, Ontario<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Bridal Specialists<span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Walk-Ins Welcome<span class="marquee-dot">✦</span></span>
+    </div>
+  </div>
+
+  <!-- ─── FEATURE BOXES ───────────────────────────────────────────────── -->
+  <div class="feature-boxes-wrap" aria-hidden="true">
+    <div class="feature-boxes-track">
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 8l3 2v12h10V10l3-2-4-6"/><path d="M8 2l4 6 4-6"/><path d="M11 8l1 3 1-3"/></svg>
+        <div class="feature-box-title">Bridal &amp; Formalwear</div>
+        <div class="feature-box-tag">Wedding gowns · Suits</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="9.53" x2="20" y2="20"/></svg>
+        <div class="feature-box-title">Hemming</div>
+        <div class="feature-box-tag">Pants · Skirts · Dresses</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="2" y="8" width="20" height="8" rx="1.5"/><line x1="5" y1="8" x2="5" y2="12"/><line x1="8" y1="8" x2="8" y2="11"/><line x1="11" y1="8" x2="11" y2="12"/><line x1="14" y1="8" x2="14" y2="11"/><line x1="17" y1="8" x2="17" y2="12"/></svg>
+        <div class="feature-box-title">Resizing</div>
+        <div class="feature-box-tag">Take in · Let out</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="5" y1="19" x2="19" y2="5"/><path d="M17 3c2.5.5 4 2.5 2 5"/><circle cx="5.5" cy="18.5" r="2"/></svg>
+        <div class="feature-box-title">Suit Tailoring</div>
+        <div class="feature-box-tag">Custom fit · Off-the-rack</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 21l13-13"/><path d="M15 6c1.5-2 4-2 5 .5s0 4.5-2 5"/><circle cx="4" cy="20" r="2"/></svg>
+        <div class="feature-box-title">Zipper &amp; Repairs</div>
+        <div class="feature-box-tag">Replace · Restore · Renew</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 19c0-5.5 2-14 4-14s4 8.5 4 14"/><ellipse cx="12" cy="19" rx="4" ry="1.5"/></svg>
+        <div class="feature-box-title">Leather Work</div>
+        <div class="feature-box-tag">Jackets · Bags · Belts</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="11" transform="scale(.7) translate(3,3)"/><polyline points="16,9 16,16 20,20" transform="scale(.7) translate(3,3)"/></svg>
+        <div class="feature-box-title">Rush Service</div>
+        <div class="feature-box-tag">Ready when you need it</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="8,12 11,15 16,10"/></svg>
+        <div class="feature-box-title">30-Day Guarantee</div>
+        <div class="feature-box-tag">We make it right</div>
+      </div>
+      <!-- duplicate for seamless loop -->
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 8l3 2v12h10V10l3-2-4-6"/><path d="M8 2l4 6 4-6"/><path d="M11 8l1 3 1-3"/></svg>
+        <div class="feature-box-title">Bridal &amp; Formalwear</div>
+        <div class="feature-box-tag">Wedding gowns · Suits</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="9.53" x2="20" y2="20"/></svg>
+        <div class="feature-box-title">Hemming</div>
+        <div class="feature-box-tag">Pants · Skirts · Dresses</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="2" y="8" width="20" height="8" rx="1.5"/><line x1="5" y1="8" x2="5" y2="12"/><line x1="8" y1="8" x2="8" y2="11"/><line x1="11" y1="8" x2="11" y2="12"/><line x1="14" y1="8" x2="14" y2="11"/><line x1="17" y1="8" x2="17" y2="12"/></svg>
+        <div class="feature-box-title">Resizing</div>
+        <div class="feature-box-tag">Take in · Let out</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="5" y1="19" x2="19" y2="5"/><path d="M17 3c2.5.5 4 2.5 2 5"/><circle cx="5.5" cy="18.5" r="2"/></svg>
+        <div class="feature-box-title">Suit Tailoring</div>
+        <div class="feature-box-tag">Custom fit · Off-the-rack</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 21l13-13"/><path d="M15 6c1.5-2 4-2 5 .5s0 4.5-2 5"/><circle cx="4" cy="20" r="2"/></svg>
+        <div class="feature-box-title">Zipper &amp; Repairs</div>
+        <div class="feature-box-tag">Replace · Restore · Renew</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 19c0-5.5 2-14 4-14s4 8.5 4 14"/><ellipse cx="12" cy="19" rx="4" ry="1.5"/></svg>
+        <div class="feature-box-title">Leather Work</div>
+        <div class="feature-box-tag">Jackets · Bags · Belts</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 19c0-5.5 2-14 4-14s4 8.5 4 14"/><ellipse cx="12" cy="19" rx="4" ry="1.5"/></svg>
+        <div class="feature-box-title">Rush Service</div>
+        <div class="feature-box-tag">Ready when you need it</div>
+      </div>
+      <div class="feature-box">
+        <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="8,12 11,15 16,10"/></svg>
+        <div class="feature-box-title">30-Day Guarantee</div>
+        <div class="feature-box-tag">We make it right</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SERVICES ──────────────────────────────────────────────────────── -->
+  <section class="services" id="services">
+    <p class="section-label reveal">What We Do</p>
+    <h2 class="section-headline reveal reveal-delay-1">
+      Every garment,<br><em>perfectly fitted</em>
+    </h2>
+    <div class="services-grid">
+      <a class="service-card reveal reveal-delay-1" href="#contact">
+        <div class="service-card-img">
+          <img src="gallery/photo_13.jpg" alt="Formalwear & Bridal" loading="lazy" />
+        </div>
+        <div class="service-card-body">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 8l3 2v12h10V10l3-2-4-6"/><path d="M8 2l4 6 4-6"/><path d="M11 8l1 3 1-3"/></svg>
+          <span class="service-num">01</span>
+          <h3 class="service-name">Formalwear &amp; Bridal</h3>
+          <p class="service-desc">Wedding gowns, bridesmaids dresses, suits, and formal attire altered with the precision they deserve. We handle corsets, bustles, hems, and full restyling.</p>
+          <span class="service-link">Get a quote →</span>
+        </div>
+      </a>
+      <a class="service-card reveal reveal-delay-2" href="#contact">
+        <div class="service-card-img">
+          <img src="gallery/photo_15.jpg" alt="Hemming" loading="lazy" />
+        </div>
+        <div class="service-card-body">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="9.53" x2="20" y2="20"/></svg>
+          <span class="service-num">02</span>
+          <h3 class="service-name">Hemming</h3>
+          <p class="service-desc">Pants, skirts, dresses, and coats hemmed to the exact length you need. Blind hems, cuffed hems, and original-hem preservation available.</p>
+          <span class="service-link">Get a quote →</span>
+        </div>
+      </a>
+      <a class="service-card reveal reveal-delay-3" href="#contact">
+        <div class="service-card-img">
+          <img src="gallery/photo_11.jpg" alt="Resizing & Alterations" loading="lazy" />
+        </div>
+        <div class="service-card-body">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="2" y="8" width="20" height="8" rx="1.5"/><line x1="5" y1="8" x2="5" y2="12"/><line x1="8" y1="8" x2="8" y2="11"/><line x1="11" y1="8" x2="11" y2="12"/><line x1="14" y1="8" x2="14" y2="11"/><line x1="17" y1="8" x2="17" y2="12"/></svg>
+          <span class="service-num">03</span>
+          <h3 class="service-name">Resizing &amp; Alterations</h3>
+          <p class="service-desc">Taking in or letting out — waists, seats, shoulders, and sleeves. We adjust fit across the whole garment so it looks made for you.</p>
+          <span class="service-link">Get a quote →</span>
+        </div>
+      </a>
+      <a class="service-card reveal reveal-delay-2" href="#contact">
+        <div class="service-card-img">
+          <img src="gallery/photo_08.jpg" alt="Suit Tailoring" loading="lazy" />
+        </div>
+        <div class="service-card-body">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="5" y1="19" x2="19" y2="5"/><path d="M17 3c2.5.5 4 2.5 2 5"/><circle cx="5.5" cy="18.5" r="2"/><path d="M13.5 10.5c1 1.5 2.5 1 4 2.5"/></svg>
+          <span class="service-num">04</span>
+          <h3 class="service-name">Suit Tailoring</h3>
+          <p class="service-desc">Jacket sleeves, chest suppression, trouser tapering, and collar adjustments. Off-the-rack suits transformed into custom fits.</p>
+          <span class="service-link">Get a quote →</span>
+        </div>
+      </a>
+      <a class="service-card reveal reveal-delay-3" href="#contact">
+        <div class="service-card-img">
+          <img src="gallery/photo_07.jpg" alt="Zipper & Repairs" loading="lazy" />
+        </div>
+        <div class="service-card-body">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 21l13-13"/><path d="M15 6c1.5-2 4-2 5 .5s0 4.5-2 5"/><circle cx="4" cy="20" r="2"/></svg>
+          <span class="service-num">05</span>
+          <h3 class="service-name">Zipper &amp; Repairs</h3>
+          <p class="service-desc">Broken zippers replaced, seams re-sewn, buttons reattached, and linings repaired. No job too small — we restore what others can't.</p>
+          <span class="service-link">Get a quote →</span>
+        </div>
+      </a>
+      <a class="service-card reveal reveal-delay-4" href="#contact">
+        <div class="service-card-img">
+          <img src="gallery/photo_06.jpg" alt="Leather Work" loading="lazy" />
+        </div>
+        <div class="service-card-body">
+          <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 19c0-5.5 2-14 4-14s4 8.5 4 14"/><ellipse cx="12" cy="19" rx="4" ry="1.5"/><circle cx="10" cy="9" r=".7" fill="currentColor" stroke="none"/><circle cx="13" cy="7" r=".7" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r=".7" fill="currentColor" stroke="none"/></svg>
+          <span class="service-num">06</span>
+          <h3 class="service-name">Leather Work</h3>
+          <p class="service-desc">Leather jackets, belts, bags, and accessories altered or repaired. Specialized stitching and hardware replacement handled with care.</p>
+          <span class="service-link">Get a quote →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── VALUE PROPOSITIONS ───────────────────────────────────────────── -->
+  <section class="value-props" id="about">
+    <div class="value-props-inner">
+      <div class="value-prop reveal">
+        <svg class="value-prop-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><circle cx="16" cy="16" r="11"/><path d="M16 9v2m0 10v2"/><path d="M12 13h6a2 2 0 010 4h-4a2 2 0 000 4h6"/></svg>
+        <h3 class="value-prop-title">Honest Pricing</h3>
+        <p class="value-prop-desc">We quote before we touch your garment. No surprises, no hidden fees. Just straightforward pricing from people who respect your budget.</p>
+        <a href="#pricing" class="value-prop-cta">See starting prices →</a>
+      </div>
+      <div class="value-prop reveal reveal-delay-2">
+        <svg class="value-prop-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" style="width:32px;height:32px;color:var(--sage)"><line x1="7" y1="21" x2="18" y2="10"/><path d="M17 8c2-2.5 5.5-2.5 6.5 0s-.5 5-2.5 5.5"/><circle cx="7.5" cy="21.5" r="2.5"/><path d="M14 14c1.5 1.5 3.5 1 5 2.5"/></svg>
+        <h3 class="value-prop-title">Expert Hands</h3>
+        <p class="value-prop-desc">With over 15 years of experience in Alliston, our family-run studio has fitted thousands of garments. We take pride in every single stitch.</p>
+        <a href="#gallery" class="value-prop-cta">See our work →</a>
+      </div>
+      <div class="value-prop reveal reveal-delay-4">
+        <svg class="value-prop-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><circle cx="16" cy="16" r="11"/><polyline points="10,16 14,20 22,12"/></svg>
+        <h3 class="value-prop-title">Guaranteed Fit</h3>
+        <p class="value-prop-desc">Not satisfied with the fit? Come back within 30 days and we'll make it right at no charge. Your satisfaction is our guarantee.</p>
+        <a href="#contact" class="value-prop-cta">Book a fitting →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── REVIEWS ───────────────────────────────────────────────────────── -->
+  <section class="reviews" id="reviews">
+    <div class="reviews-header reveal">
+      <div class="reviews-badge">
+        <div class="reviews-rating-block">
+          <span class="reviews-label">Customer Rating</span>
+          <span class="reviews-score">5.0</span>
+          <div class="reviews-stars">★★★★★</div>
+          <span class="reviews-count">500+ happy customers</span>
+        </div>
+        <div class="reviews-source">
+          Rated<br><strong style="color:var(--white);font-family:var(--serif);font-size:clamp(18px,2vw,26px);font-weight:300">Excellent</strong><br>on Google Reviews
+        </div>
+      </div>
+    </div>
+    <div class="reviews-carousel-wrap">
+      <div class="reviews-carousel-track">
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"I went to remake my mother's wedding dress into my rehearsal dinner dress as a surprise for my parents. The owners were so helpful, understanding, and worked with my budget. I highly recommend this place!!"</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Shantel L.</span>
+              <span class="review-slide-service">Wedding Dress Transformation</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"My dress was 2 sizes too big. This beautiful establishment run by a husband and wife — they're so understanding and absolutely the nicest people I've ever met. They removed bones from the corset, hemmed it perfectly, and added a bustle."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Zandra W.</span>
+              <span class="review-slide-service">Bridal Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Absolutely outstanding service and quality! They not only made all the alterations — they went above and beyond. Finished in 3 days for a Saturday wedding. Beyond grateful."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Rebecca M.</span>
+              <span class="review-slide-service">Emergency Wedding Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Took in a suit for my brother's wedding and had it back looking completely custom-made. Impeccable stitching, and they were honest about what could and couldn't be done. Worth every penny."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Derek P.</span>
+              <span class="review-slide-service">Suit Tailoring</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"I've been bringing my pants here for years. Always perfect hems, always on time. There's nowhere else I'd go in Alliston for alterations — they're simply the best around."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Michelle T.</span>
+              <span class="review-slide-service">Hemming &amp; Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"My leather jacket zipper broke right before a trip. They replaced it same-day. The repair is completely invisible and holds perfectly. Incredible craftsmanship — I can't believe the quality."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">James K.</span>
+              <span class="review-slide-service">Leather &amp; Zipper Repair</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Needed bridesmaid dresses altered for 4 different body types in under a week. They pulled it off flawlessly. Every single one fit like it was made to measure. The whole bridal party was blown away."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Courtney A.</span>
+              <span class="review-slide-service">Bridal Party Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Friendly, fast, and fair prices. Brought in a vintage coat I thought was ruined — they re-lined the whole thing. It looks better than when I bought it. A genuinely talented family business."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Sandra H.</span>
+              <span class="review-slide-service">Coat Restoration</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <!-- duplicate for seamless loop -->
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"I went to remake my mother's wedding dress into my rehearsal dinner dress as a surprise for my parents. The owners were so helpful, understanding, and worked with my budget. I highly recommend this place!!"</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Shantel L.</span>
+              <span class="review-slide-service">Wedding Dress Transformation</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"My dress was 2 sizes too big. This beautiful establishment run by a husband and wife — they're so understanding and absolutely the nicest people I've ever met. They removed bones from the corset, hemmed it perfectly, and added a bustle."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Zandra W.</span>
+              <span class="review-slide-service">Bridal Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Absolutely outstanding service and quality! They not only made all the alterations — they went above and beyond. Finished in 3 days for a Saturday wedding. Beyond grateful."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Rebecca M.</span>
+              <span class="review-slide-service">Emergency Wedding Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Took in a suit for my brother's wedding and had it back looking completely custom-made. Impeccable stitching, and they were honest about what could and couldn't be done. Worth every penny."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Derek P.</span>
+              <span class="review-slide-service">Suit Tailoring</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"I've been bringing my pants here for years. Always perfect hems, always on time. There's nowhere else I'd go in Alliston for alterations — they're simply the best around."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Michelle T.</span>
+              <span class="review-slide-service">Hemming &amp; Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"My leather jacket zipper broke right before a trip. They replaced it same-day. The repair is completely invisible and holds perfectly. Incredible craftsmanship — I can't believe the quality."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">James K.</span>
+              <span class="review-slide-service">Leather &amp; Zipper Repair</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Needed bridesmaid dresses altered for 4 different body types in under a week. They pulled it off flawlessly. Every single one fit like it was made to measure. The whole bridal party was blown away."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Courtney A.</span>
+              <span class="review-slide-service">Bridal Party Alterations</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review-slide-stars">★★★★★</div>
+          <p class="review-slide-text">"Friendly, fast, and fair prices. Brought in a vintage coat I thought was ruined — they re-lined the whole thing. It looks better than when I bought it. A genuinely talented family business."</p>
+          <div class="review-slide-footer">
+            <div class="review-slide-meta">
+              <span class="review-slide-name">Sandra H.</span>
+              <span class="review-slide-service">Coat Restoration</span>
+            </div>
+            <div class="review-slide-g"><span class="review-g-badge">G</span>Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OUR WORK GALLERY ──────────────────────────────────────────────── -->
+  <section class="gallery" id="gallery" style="padding:0;">
+    <div class="gallery-header reveal">
+      <p class="section-label">Our Work</p>
+      <h2 class="section-headline" style="margin-bottom:0">
+        Craftsmanship<br><em>you can see</em>
+      </h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal">
+        <img src="gallery/photo_08.jpg" alt="Suit tailoring detail" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Suit Tailoring</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="gallery/photo_19.jpg" alt="Bridal gown" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Gown</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="gallery/photo_13.jpg" alt="Bridal party" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Party</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="gallery/photo_15.jpg" alt="Wedding dress fitting" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Fitting</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="gallery/photo_11.jpg" alt="Suit fitting" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Custom Fit</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="gallery/photo_06.jpg" alt="Studio interior" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Our Studio</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="gallery/photo_07.jpg" alt="Formalwear" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Formalwear</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="gallery/photo_00.jpg" alt="Readers Choice Award 2025" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Readers' Choice 2025</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="gallery/photo_03.jpg" alt="Before and after transformation" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Transformation</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRICING ───────────────────────────────────────────────────────── -->
+  <section class="pricing" id="pricing">
+    <p class="section-label reveal">Transparent Pricing</p>
+    <h2 class="section-headline reveal reveal-delay-1">
+      Starting prices<br><em>for common alterations</em>
+    </h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1">
+        <span class="pricing-service">Hemming</span>
+        <h3 class="pricing-name">Pant Hem</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>15</div>
+        <p class="pricing-desc">Single-layer cuffed or plain hem. Includes original hem preservation on premium trousers.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-2">
+        <span class="pricing-service">Repairs</span>
+        <h3 class="pricing-name">Zipper Replacement</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>20</div>
+        <p class="pricing-desc">All zipper types: invisible, exposed, separating, and coil. Pants, dresses, and jackets.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-3">
+        <span class="pricing-service">Alterations</span>
+        <h3 class="pricing-name">Take In / Let Out</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>35</div>
+        <p class="pricing-desc">Waist, seat, side seams, and shoulders. Full-body fit adjustments across all garment types.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-4">
+        <span class="pricing-service">Bridal &amp; Formal</span>
+        <h3 class="pricing-name">Bridal Alterations</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>65</div>
+        <p class="pricing-desc">Wedding gowns, bridesmaid dresses, and formal gowns. Bustles, corset adjustments, and full hem work.</p>
+      </div>
+    </div>
+    <p class="pricing-note reveal">All pricing varies by garment complexity and fabric. <a href="#contact" style="color:var(--sage);text-decoration:none">Contact us for a free estimate →</a></p>
+  </section>
+
+  <!-- ─── PROMISES ──────────────────────────────────────────────────────── -->
+  <section class="promises" id="promises">
+    <p class="section-label reveal">Our Commitment</p>
+    <h2 class="section-headline reveal reveal-delay-1">
+      We stand behind<br><em>every stitch</em>
+    </h2>
+    <div class="promises-grid">
+      <div class="promise-card reveal reveal-delay-1">
+        <svg class="promise-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><circle cx="16" cy="16" r="11"/><polyline points="16,9 16,16 20,20"/></svg>
+        <h3 class="promise-title">Quick Turnaround</h3>
+        <p class="promise-desc">Most alterations ready in 3–5 business days. Rush service available — just ask at booking.</p>
+      </div>
+      <div class="promise-card reveal reveal-delay-2">
+        <svg class="promise-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><path d="M16 3l2 8h8l-6.5 5 2.5 8L16 19l-6 5 2.5-8L6 11h8z"/></svg>
+        <h3 class="promise-title">30-Day Fit Guarantee</h3>
+        <p class="promise-desc">Not happy with the result? Return within 30 days and we'll correct it at no charge. No questions asked.</p>
+      </div>
+      <div class="promise-card reveal reveal-delay-3">
+        <svg class="promise-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" style="width:32px;height:32px;color:var(--sage)"><line x1="8" y1="22" x2="22" y2="10"/><path d="M20 8c2-2.5 5.5-2 6.5.5s-.5 5-2.5 5.5"/><circle cx="8.5" cy="22.5" r="2.5"/></svg>
+        <h3 class="promise-title">Expert Alterations</h3>
+        <p class="promise-desc">Over 15 years of professional tailoring experience. We handle everything from simple hems to full bridal reconstruction.</p>
+      </div>
+      <div class="promise-card reveal reveal-delay-4">
+        <svg class="promise-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><path d="M6 6h20v14H17l-5 4v-4H6z"/></svg>
+        <h3 class="promise-title">Free Consultation</h3>
+        <p class="promise-desc">Walk in anytime for a fitting assessment and quote. No appointment needed, no obligation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NEWSLETTER ──────────────────────────────────────────────────────── -->
+  <section class="newsletter" id="newsletter">
+    <p class="newsletter-label reveal">Stay in the Loop</p>
+    <h2 class="newsletter-headline reveal reveal-delay-1">
+      Seasonal tips, exclusive offers,<br><em>straight to your inbox</em>
+    </h2>
+    <p class="newsletter-sub reveal reveal-delay-2">Be the first to hear about seasonal promotions, garment care tips, and studio news.</p>
+    <form class="newsletter-form reveal reveal-delay-3" id="newsletterForm" onsubmit="handleNewsletter(event)">
+      <input class="newsletter-input" type="email" name="email" placeholder="Your email address" required autocomplete="email" />
+      <button class="newsletter-btn" type="submit">Subscribe</button>
+    </form>
+    <p class="newsletter-note reveal reveal-delay-4">No spam. Unsubscribe anytime.</p>
+    <p class="newsletter-success" id="newsletterSuccess">Thank you — you're on the list ✦</p>
+  </section>
+
+  <!-- ─── CONTACT ───────────────────────────────────────────────────────── -->
+  <section class="contact" id="contact">
+    <h2 class="contact-headline reveal">
+      Ready for<br>the <em>perfect</em><br>fit?
+    </h2>
+    <div class="contact-btn-wrap reveal reveal-delay-1">
+      <a href="tel:+17052508500" class="btn-primary">Call Us Now</a>
+    </div>
+    <div class="contact-info reveal reveal-delay-2">
+      <div class="contact-item">
+        <span class="contact-label">Address</span>
+        <span class="contact-value">123 Dunlop St E<br>Alliston, ON L9R 1B3</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Phone</span>
+        <span class="contact-value"><a href="tel:+17052508500">(705) 250-8500</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <span class="contact-value"><a href="mailto:allistontailoring@gmail.com">allistontailoring@gmail.com</a></span>
+      </div>
+    </div>
+    <div class="hours-grid reveal reveal-delay-3">
+      <div class="hours-row">
+        <span class="hours-day">Mon – Fri</span>
+        <span class="hours-time">9:00 am – 6:00 pm</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Saturday</span>
+        <span class="hours-time">10:00 am – 4:00 pm</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Sunday</span>
+        <span class="hours-time">Closed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MAP ──────────────────────────────────────────────────────────── -->
+  <section class="map-section" id="find-us">
+    <div class="map-section-inner">
+      <div class="map-info reveal">
+        <p class="map-info-label">Find Us</p>
+        <h2 class="map-info-headline">Visit our studio<br>in <em>Alliston</em></h2>
+        <div class="map-details">
+          <div class="map-detail-row">
+            <span class="map-detail-icon">📍</span>
+            <div>
+              <p class="map-detail-label">Address</p>
+              <p class="map-detail-value">176 Victoria St E<br>Alliston, ON L9R 1H3</p>
+            </div>
+          </div>
+          <div class="map-detail-row">
+            <span class="map-detail-icon">🕐</span>
+            <div>
+              <p class="map-detail-label">Hours</p>
+              <p class="map-detail-value">Mon – Fri: 9 am – 6 pm<br>Sat: 10 am – 4 pm · Sun: Closed</p>
+            </div>
+          </div>
+          <div class="map-detail-row">
+            <span class="map-detail-icon">📞</span>
+            <div>
+              <p class="map-detail-label">Phone</p>
+              <p class="map-detail-value"><a href="tel:+17052508500">(705) 250-8500</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="map-frame-wrap reveal reveal-delay-2">
+        <iframe
+          src="https://maps.google.com/maps?q=176+Victoria+St+E,+Alliston,+ON&t=&z=17&ie=UTF8&iwloc=&output=embed"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Alliston Tailoring & Alterations location"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-marquee-wrap" aria-hidden="true">
+      <div class="footer-marquee-track">
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Alliston Tailoring &amp; Alterations. All rights reserved.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Facebook">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─── NEWSLETTER ─────────────────────────────────────────────── */
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const form = document.getElementById('newsletterForm');
+      const success = document.getElementById('newsletterSuccess');
+      form.style.display = 'none';
+      success.style.display = 'block';
+    }
+
+    /* ─── CURSOR ───────────────────────────────────────────────────── */
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+
+    document.querySelectorAll('a, button, .service-card, .testimonial-card, .promise-card, .pricing-card, .gallery-item').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    /* ─── SCROLL REVEAL ────────────────────────────────────────────── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ─── NAV SCROLL ───────────────────────────────────────────────── */
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.backdropFilter = window.scrollY > 40 ? 'blur(16px)' : 'blur(10px)';
+    }, { passive: true });
+  </script>
+</body>
+</html>
