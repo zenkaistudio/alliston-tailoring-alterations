@@ -144,6 +144,13 @@
       height: clamp(32px, 3.2vw, 46px); width: auto; display: block;
     }
 
+    .nav-title {
+      font-family: var(--serif); font-size: clamp(13px, 1.2vw, 17px); font-weight: 400;
+      letter-spacing: 0.12em; color: var(--beige); text-transform: uppercase;
+      position: absolute; left: 50%; transform: translateX(-50%);
+      white-space: nowrap; pointer-events: none;
+    }
+
     .nav-links {
       display: flex; gap: clamp(20px, 2.5vw, 40px); list-style: none; align-items: center;
     }
@@ -1006,6 +1013,7 @@
     <a href="#" class="nav-logo">
       <img src="logo.jpg" alt="Alliston Tailoring & Alterations" />
     </a>
+    <span class="nav-title">Alliston Tailoring &amp; Alterations</span>
     <ul class="nav-links">
       <li class="nav-has-dropdown">
         <a href="#services">Services</a>
