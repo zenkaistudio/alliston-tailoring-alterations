@@ -130,7 +130,7 @@
     /* ─── NAV ───────────────────────────────────────────────────────────── */
     nav {
       position: sticky; top: 0; z-index: 900;
-      display: flex; align-items: center; justify-content: space-between;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
       padding: clamp(16px, 2vw, 24px) clamp(24px, 5vw, 72px);
       background: rgba(253,244,236,.93); backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(80,45,30,.06);
@@ -146,11 +146,12 @@
     }
 
     .nav-title {
-      font-family: var(--serif); font-size: clamp(13px, 1.2vw, 17px); font-weight: 400;
-      letter-spacing: 0.12em; color: var(--beige); text-transform: uppercase;
-      position: absolute; left: 50%; transform: translateX(-50%);
-      white-space: nowrap; pointer-events: none;
+      font-family: var(--serif); font-size: clamp(14px, 1.3vw, 19px);
+      font-weight: 300; font-style: italic; letter-spacing: 0.08em;
+      color: var(--white); opacity: 0.88;
+      text-align: center; white-space: nowrap; pointer-events: none;
     }
+    @media (max-width: 900px) { .nav-title { display: none; } }
 
     .nav-links {
       display: flex; gap: clamp(20px, 2.5vw, 40px); list-style: none; align-items: center;
