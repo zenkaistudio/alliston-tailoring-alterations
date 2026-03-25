@@ -200,7 +200,9 @@
       font-family: var(--sans); font-size: clamp(9px, 0.8vw, 11px);
       font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--bg) !important; background: var(--beige);
-      padding: 10px 22px; text-decoration: none;
+      padding: 10px 22px !important; text-decoration: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      line-height: 1;
       transition: background .25s, color .25s; white-space: nowrap;
     }
     .nav-book:hover { background: var(--sage); color: var(--bg) !important; }
@@ -1082,7 +1084,7 @@
         <div class="hero-cred-pill">
           <span class="hero-cred-icon">★★★★★</span>
           <div class="hero-cred-text">
-            <span class="hero-cred-title">Google Rated 4.9</span>
+            <span class="hero-cred-title">Google Rated 4.8</span>
             <span class="hero-cred-sub">500+ happy customers</span>
           </div>
         </div>
@@ -1243,7 +1245,7 @@
     <div class="services-grid">
       <a class="service-card reveal reveal-delay-1" href="#contact">
         <div class="service-card-img">
-          <img src="gallery/photo_13.jpg" alt="Formalwear & Bridal" loading="lazy" />
+          <img src="gallery/photo_29.jpg" alt="Formalwear & Bridal" loading="lazy" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 8l3 2v12h10V10l3-2-4-6"/><path d="M8 2l4 6 4-6"/><path d="M11 8l1 3 1-3"/></svg>
@@ -1255,7 +1257,7 @@
       </a>
       <a class="service-card reveal reveal-delay-2" href="#contact">
         <div class="service-card-img">
-          <img src="gallery/photo_08.jpg" alt="Suit Tailoring" loading="lazy" />
+          <img src="gallery/photo_26.jpg" alt="Suit Tailoring" loading="lazy" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="5" y1="19" x2="19" y2="5"/><path d="M17 3c2.5.5 4 2.5 2 5"/><circle cx="5.5" cy="18.5" r="2"/><path d="M13.5 10.5c1 1.5 2.5 1 4 2.5"/></svg>
@@ -1267,7 +1269,7 @@
       </a>
       <a class="service-card reveal reveal-delay-3" href="#contact">
         <div class="service-card-img">
-          <img src="gallery/photo_09.jpg" alt="Prom" loading="lazy" />
+          <img src="gallery/photo_23.jpg" alt="Prom" loading="lazy" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.5 4.5H18l-3.75 2.75 1.5 4.5L12 11.5l-3.75 2.25 1.5-4.5L6 6.5h4.5z"/><path d="M12 14v8"/><path d="M9 18h6"/></svg>
@@ -1279,7 +1281,7 @@
       </a>
       <a class="service-card reveal reveal-delay-4" href="#contact">
         <div class="service-card-img">
-          <img src="gallery/photo_10.jpg" alt="Dry Cleaning" loading="lazy" />
+          <img src="gallery/photo_20.jpg" alt="Dry Cleaning" loading="lazy" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 0-5 4-5 9a5 5 0 0 0 10 0c0-5-5-9-5-9z"/><path d="M9 17c0 1.66 1.34 3 3 3s3-1.34 3-3"/><line x1="7" y1="5" x2="5" y2="3"/><line x1="17" y1="5" x2="19" y2="3"/></svg>
@@ -1315,7 +1317,7 @@
       </a>
       <a class="service-card reveal reveal-delay-3" href="#contact">
         <div class="service-card-img">
-          <img src="gallery/photo_07.jpg" alt="Zipper & Repairs" loading="lazy" />
+          <img src="gallery/photo_21.jpg" alt="Zipper & Repairs" loading="lazy" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 21l13-13"/><path d="M15 6c1.5-2 4-2 5 .5s0 4.5-2 5"/><circle cx="4" cy="20" r="2"/></svg>
@@ -1327,7 +1329,7 @@
       </a>
       <a class="service-card reveal reveal-delay-4" href="#contact">
         <div class="service-card-img">
-          <img src="gallery/photo_06.jpg" alt="Leather Work" loading="lazy" />
+          <img src="gallery/photo_27.jpg" alt="Leather Work" loading="lazy" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 19c0-5.5 2-14 4-14s4 8.5 4 14"/><ellipse cx="12" cy="19" rx="4" ry="1.5"/><circle cx="10" cy="9" r=".7" fill="currentColor" stroke="none"/><circle cx="13" cy="7" r=".7" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r=".7" fill="currentColor" stroke="none"/></svg>
@@ -1370,9 +1372,9 @@
       <div class="reviews-badge">
         <div class="reviews-rating-block">
           <span class="reviews-label">Customer Rating</span>
-          <span class="reviews-score">5.0</span>
+          <span class="reviews-score">4.8</span>
           <div class="reviews-stars">★★★★★</div>
-          <span class="reviews-count">500+ happy customers</span>
+          <span class="reviews-count">189 reviews · 500+ happy customers</span>
         </div>
         <div class="reviews-source">
           Rated<br><strong style="color:var(--white);font-family:var(--serif);font-size:clamp(18px,2vw,26px);font-weight:300">Excellent</strong><br>on Google Reviews
@@ -1572,26 +1574,30 @@
     </div>
     <div class="gallery-grid">
       <div class="gallery-item reveal">
-        <img src="gallery/photo_08.jpg" alt="Suit tailoring detail" loading="lazy" />
+        <img src="gallery/photo_26.jpg" alt="Suit on mannequin" loading="lazy" />
         <div class="gallery-item-overlay"><span class="gallery-item-caption">Suit Tailoring</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="gallery/photo_25.jpg" alt="Alliston sign" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Our Studio</span></div>
       </div>
       <div class="gallery-item reveal reveal-delay-1">
         <img src="gallery/photo_19.jpg" alt="Bridal gown" loading="lazy" />
         <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Gown</span></div>
       </div>
-      <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-item reveal reveal-delay-3">
         <img src="gallery/photo_13.jpg" alt="Bridal party" loading="lazy" />
         <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Party</span></div>
       </div>
-      <div class="gallery-item reveal reveal-delay-1">
+      <div class="gallery-item reveal">
         <img src="gallery/photo_15.jpg" alt="Wedding dress fitting" loading="lazy" />
         <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Fitting</span></div>
       </div>
-      <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-item reveal reveal-delay-1">
         <img src="gallery/photo_11.jpg" alt="Suit fitting" loading="lazy" />
         <div class="gallery-item-overlay"><span class="gallery-item-caption">Custom Fit</span></div>
       </div>
-      <div class="gallery-item reveal reveal-delay-3">
+      <div class="gallery-item reveal reveal-delay-2">
         <img src="gallery/photo_06.jpg" alt="Studio interior" loading="lazy" />
         <div class="gallery-item-overlay"><span class="gallery-item-caption">Our Studio</span></div>
       </div>
@@ -1618,11 +1624,39 @@
     </h2>
     <div class="pricing-grid">
       <div class="pricing-card reveal reveal-delay-1">
-        <span class="pricing-service">Hemming</span>
-        <h3 class="pricing-name">Pant Hem</h3>
+        <span class="pricing-service">Bridal &amp; Formal</span>
+        <h3 class="pricing-name">Bridal Alterations</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>65</div>
+        <p class="pricing-desc">Wedding gowns, bridesmaid dresses, and formal gowns. Bustles, corset adjustments, and full hem work.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-2">
+        <span class="pricing-service">Prom</span>
+        <h3 class="pricing-name">Prom Alterations</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>45</div>
+        <p class="pricing-desc">Prom dresses and suits tailored to fit perfectly. Hemming, taking in, and last-minute adjustments welcome.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-3">
+        <span class="pricing-service">Tailoring</span>
+        <h3 class="pricing-name">Suit Jacket</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>40</div>
+        <p class="pricing-desc">Sleeve shortening, chest suppression, and collar adjustments. Off-the-rack jackets made to measure.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-4">
+        <span class="pricing-service">Dry Cleaning</span>
+        <h3 class="pricing-name">Dry Cleaning</h3>
         <div class="pricing-from">Starting from</div>
         <div class="pricing-price"><sup>$</sup>15</div>
-        <p class="pricing-desc">Single-layer cuffed or plain hem. Includes original hem preservation on premium trousers.</p>
+        <p class="pricing-desc">Professional dry cleaning per item. Suits, gowns, delicate fabrics, and everyday wear returned fresh and pressed.</p>
+      </div>
+      <div class="pricing-card reveal reveal-delay-1">
+        <span class="pricing-service">Alterations</span>
+        <h3 class="pricing-name">Take In / Let Out</h3>
+        <div class="pricing-from">Starting from</div>
+        <div class="pricing-price"><sup>$</sup>35</div>
+        <p class="pricing-desc">Waist, seat, side seams, and shoulders. Full-body fit adjustments across all garment types.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-2">
         <span class="pricing-service">Repairs</span>
@@ -1632,18 +1666,11 @@
         <p class="pricing-desc">All zipper types: invisible, exposed, separating, and coil. Pants, dresses, and jackets.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-3">
-        <span class="pricing-service">Alterations</span>
-        <h3 class="pricing-name">Take In / Let Out</h3>
+        <span class="pricing-service">Hemming</span>
+        <h3 class="pricing-name">Pant Hem</h3>
         <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>35</div>
-        <p class="pricing-desc">Waist, seat, side seams, and shoulders. Full-body fit adjustments across all garment types.</p>
-      </div>
-      <div class="pricing-card reveal reveal-delay-4">
-        <span class="pricing-service">Bridal &amp; Formal</span>
-        <h3 class="pricing-name">Bridal Alterations</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>65</div>
-        <p class="pricing-desc">Wedding gowns, bridesmaid dresses, and formal gowns. Bustles, corset adjustments, and full hem work.</p>
+        <div class="pricing-price"><sup>$</sup>15</div>
+        <p class="pricing-desc">Single-layer cuffed or plain hem. Includes original hem preservation on premium trousers.</p>
       </div>
     </div>
     <p class="pricing-note reveal">All pricing varies by garment complexity and fabric. <a href="#contact" style="color:var(--sage);text-decoration:none">Contact us for a free estimate →</a></p>
