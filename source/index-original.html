@@ -150,6 +150,7 @@
       color: var(--white); opacity: 0.88;
       text-align: center; white-space: nowrap; pointer-events: none;
     }
+    .nav-title-short { display: none; }
     @media (max-width: 900px) { .nav-title { display: none; } }
 
     .nav-links {
@@ -852,12 +853,16 @@
     @media (max-width: 768px) {
       .cursor, .cursor-ring { display: none; }
       .topbar { display: none; }
-      nav { padding: 14px 20px; position: sticky; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 10px; letter-spacing: .12em; }
+      nav { padding: 12px 18px; position: sticky; }
+      .nav-logo img { height: 30px; }
+      .nav-title { display: block; font-size: 15px; letter-spacing: 0.06em; }
+      .nav-title-full { display: none; }
+      .nav-title-short { display: inline; }
+      .nav-links li:not(:last-child) { display: none; }
+      .nav-links { gap: 0; }
       .nav-has-dropdown > a::before { display: none; }
       .nav-dropdown { display: none; }
-      .nav-book { padding: 8px 14px; font-size: 9px; }
+      .nav-book { padding: 9px 18px; font-size: 10px; letter-spacing: 0.16em; }
 
       .hero { padding: 0 20px 60px; }
       .hero-scroll { display: none; }
@@ -1013,7 +1018,7 @@
     <a href="#" class="nav-logo">
       <img src="logo.jpg" alt="Alliston Tailoring & Alterations" />
     </a>
-    <span class="nav-title">Alliston Tailoring &amp; Alterations</span>
+    <span class="nav-title"><span class="nav-title-full">Alliston Tailoring &amp; Alterations</span><span class="nav-title-short">Alliston T &amp; A</span></span>
     <ul class="nav-links">
       <li class="nav-has-dropdown">
         <a href="#services">Services</a>
