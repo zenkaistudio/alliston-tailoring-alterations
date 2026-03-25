@@ -991,9 +991,9 @@
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
         allistontailoring@gmail.com
       </a>
-      <a href="https://maps.google.com/?q=54+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="topbar-location">
+      <a href="https://maps.google.com/?q=176+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="topbar-location">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        54 Victoria St E, Alliston
+        176 Victoria St E, Alliston
       </a>
     </div>
     <div class="topbar-right">
@@ -1033,7 +1033,7 @@
         <svg class="location-item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <div>
           <div class="location-item-label">Our Studio</div>
-          <div class="location-item-value">54 Victoria St E, Alliston, ON</div>
+          <div class="location-item-value">176 Victoria St E, Alliston, ON</div>
           <div class="location-item-sub">Free parking · Walk-ins welcome</div>
         </div>
       </div>
@@ -1041,7 +1041,7 @@
         <svg class="location-item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zm.5-17v6H17l-4.5 7V11H8l4.5-7z"/></svg>
         <div>
           <div class="location-item-label">Hours</div>
-          <div class="location-item-value">Mon – Sat: 10am – 6pm</div>
+          <div class="location-item-value">Mon – Fri: 9am – 6pm · Sat: 10am – 4pm</div>
           <div class="location-item-sub">Closed Sundays &amp; holidays</div>
         </div>
       </div>
@@ -1054,7 +1054,7 @@
         </div>
       </div>
     </div>
-    <a href="https://maps.google.com/?q=54+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="location-bar-cta">
+    <a href="https://maps.google.com/?q=176+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="location-bar-cta">
       Get Directions
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -1675,7 +1675,7 @@
     <div class="contact-info reveal reveal-delay-2">
       <div class="contact-item">
         <span class="contact-label">Address</span>
-        <span class="contact-value">123 Dunlop St E<br>Alliston, ON L9R 1B3</span>
+        <span class="contact-value">176 Victoria St E<br>Alliston, ON L9R 1H3</span>
       </div>
       <div class="contact-item">
         <span class="contact-label">Phone</span>
@@ -1754,8 +1754,8 @@
     <div class="footer-bottom">
       <p class="footer-copy">&copy; 2026 Alliston Tailoring &amp; Alterations. All rights reserved.</p>
       <div class="footer-socials">
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="Facebook">Facebook</a>
+        <a href="https://www.instagram.com/allistontailoring/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+        <a href="https://www.facebook.com/p/Alliston-Tailoring-Alterations-100063487421506/" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
       </div>
     </div>
   </footer>
@@ -1765,9 +1765,25 @@
     function handleNewsletter(e) {
       e.preventDefault();
       const form = document.getElementById('newsletterForm');
+      const btn = form.querySelector('.newsletter-btn');
       const success = document.getElementById('newsletterSuccess');
-      form.style.display = 'none';
-      success.style.display = 'block';
+      const email = form.querySelector('input[type="email"]').value;
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      fetch('https://formspree.io/f/allistontailoring@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, _subject: 'New Newsletter Subscriber – Alliston Tailoring' })
+      })
+      .then(r => {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      })
+      .catch(() => {
+        btn.textContent = 'Subscribe';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      });
     }
 
     /* ─── CURSOR ───────────────────────────────────────────────────── */
