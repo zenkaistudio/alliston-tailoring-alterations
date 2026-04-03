@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Alliston Tailoring & Alterations</title>
+  <meta name="description" content="Family-run tailoring studio in Alliston, Ontario. Est. 2008. Meet the people behind every perfect fit." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #111110;
+      --bg-card:  #191614;
+      --bg-hover: #201D19;
+      --beige:    #CEC6BB;
+      --sage:     #B83232;
+      --dim:      #6B6360;
+      --white:    #F0EBE4;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+
+    body {
+      background: var(--bg);
+      color: var(--beige);
+      font-family: var(--sans);
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.035; pointer-events: none; z-index: 9999;
+    }
+
+    .cursor {
+      position: fixed; width: 8px; height: 8px; background: var(--beige);
+      border-radius: 50%; pointer-events: none; z-index: 10000;
+      transform: translate(-50%, -50%); transition: width .2s, height .2s, background .2s;
+    }
+    .cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(205,198,190,.4); border-radius: 50%;
+      pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+      transition: all .12s ease-out;
+    }
+    body.hovering .cursor { width: 14px; height: 14px; background: var(--sage); }
+    body.hovering .cursor-ring { width: 52px; height: 52px; border-color: var(--sage); }
+
+    /* ─── TOP BAR ───────────────────────────────────────────────────────── */
+    .topbar {
+      background: var(--bg-card);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+      display: flex; align-items: center;
+      padding: 8px clamp(24px, 5vw, 72px);
+      font-size: clamp(10px, 0.85vw, 12px);
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .topbar-left { display: flex; gap: clamp(20px, 3vw, 40px); align-items: center; }
+    .topbar-left a { color: var(--dim); text-decoration: none; transition: color .2s; display: flex; align-items: center; gap: 7px; }
+    .topbar-left a:hover { color: var(--beige); }
+    .topbar-left a svg { width: 11px; height: 11px; fill: var(--sage); flex-shrink: 0; }
+    .topbar-location { display: none; }
+    @media (min-width: 1100px) { .topbar-location { display: flex !important; } }
+
+    /* ─── NAV ───────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 900;
+      display: flex; align-items: center; gap: clamp(20px,3vw,48px);
+      padding: clamp(14px,2vh,20px) clamp(24px,5vw,72px);
+      background: rgba(29,29,27,.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+    .nav-logo img { height: clamp(32px,4vh,44px); width: auto; display: block; border-radius: 2px; }
+    .nav-title {
+      font-family: var(--serif); font-size: clamp(14px,1.3vw,18px);
+      font-weight: 400; letter-spacing: .04em; color: var(--beige); white-space: nowrap;
+    }
+    @media (max-width: 900px) { .nav-title { display: none; } }
+    .nav-links { display: flex; list-style: none; gap: clamp(20px,3vw,44px); margin-left: auto; }
+    .nav-links a {
+      font-size: clamp(10px,.9vw,12px); letter-spacing: .2em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; position: relative; padding-bottom: 3px;
+      transition: color .25s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: var(--sage);
+      transform: scaleX(0); transform-origin: right; transition: transform .4s cubic-bezier(.76,0,.24,1);
+    }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); transform-origin: left; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-book {
+      margin-left: auto;
+      font-size: clamp(9px,.75vw,11px); letter-spacing: .22em; text-transform: uppercase;
+      color: var(--bg); background: var(--sage);
+      padding: 10px 24px; text-decoration: none; transition: background .25s; flex-shrink: 0;
+    }
+    .nav-book:hover { background: var(--beige); }
+
+    /* ─── HERO ──────────────────────────────────────────────────────────── */
+    .about-hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 92vh; overflow: hidden;
+    }
+    .about-hero-img {
+      position: relative; overflow: hidden;
+    }
+    .about-hero-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: brightness(0.82) saturate(1.1);
+      transform: scale(1.04);
+      animation: heroZoom 14s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.04); }
+      to   { transform: scale(1.10); }
+    }
+    .about-hero-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--bg) 100%),
+                  linear-gradient(to top, var(--bg) 0%, transparent 30%);
+    }
+    .about-hero-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(60px,8vh,100px) clamp(40px,5vw,80px);
+      background: var(--bg);
+    }
+    .about-hero-content::before {
+      content: ''; position: absolute; inset: -50%;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(205,198,190,.015) 60px, rgba(205,198,190,.015) 61px);
+      animation: drift 28s linear infinite;
+    }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(60px,60px); } }
+    .about-hero-inner { position: relative; z-index: 1; }
+    .page-eyebrow {
+      font-family: var(--sans); font-size: clamp(10px,.85vw,12px);
+      letter-spacing: .35em; text-transform: uppercase; color: var(--sage);
+      margin-bottom: clamp(18px,2.5vh,28px);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .page-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--sage); }
+    .page-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(48px,6.5vw,100px); line-height: .9; letter-spacing: -.02em;
+      color: var(--white);
+    }
+    .page-headline em { font-style: italic; color: var(--beige); }
+    .page-sub {
+      margin-top: clamp(24px,3vh,40px); max-width: 500px;
+      font-size: clamp(13px,1.2vw,16px); font-weight: 300; color: var(--dim); line-height: 1.85;
+    }
+    .page-sub em { color: var(--beige); font-style: normal; }
+    .hero-est {
+      margin-top: clamp(36px,5vh,52px);
+      display: flex; gap: clamp(28px,4vw,52px);
+    }
+    .hero-stat-num {
+      font-family: var(--serif); font-size: clamp(36px,4vw,58px);
+      font-weight: 300; color: var(--white); line-height: 1;
+    }
+    .hero-stat-num span { color: var(--sage); }
+    .hero-stat-label {
+      font-family: var(--sans); font-size: clamp(9px,.8vw,11px);
+      letter-spacing: .2em; text-transform: uppercase; color: var(--dim);
+      margin-top: 6px;
+    }
+    @media (max-width: 860px) {
+      .about-hero { grid-template-columns: 1fr; }
+      .about-hero-img { min-height: 50vw; }
+    }
+
+    /* ─── STORY ─────────────────────────────────────────────────────────── */
+    .story {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-top: 1px solid rgba(205,198,190,.08);
+    }
+    .story-text {
+      padding: clamp(60px,8vh,100px) clamp(40px,5vw,80px);
+      background: var(--bg-card);
+      display: flex; flex-direction: column; justify-content: center; gap: 28px;
+    }
+    .section-label {
+      font-family: var(--sans); font-size: clamp(9px,.8vw,11px);
+      letter-spacing: .35em; text-transform: uppercase; color: var(--sage);
+    }
+    .section-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(32px,4vw,60px); color: var(--white); line-height: 1.0;
+      letter-spacing: -.01em;
+    }
+    .section-headline em { font-style: italic; color: var(--beige); }
+    .story-body {
+      font-size: clamp(13px,1.15vw,16px); font-weight: 300; color: var(--dim);
+      line-height: 1.9; display: flex; flex-direction: column; gap: 18px;
+      border-top: 1px solid rgba(205,198,190,.1); padding-top: 24px;
+    }
+    .story-body em { color: var(--beige); font-style: normal; }
+    .story-img-grid {
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+    }
+    .story-img-cell {
+      overflow: hidden; position: relative;
+    }
+    .story-img-cell img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .8s cubic-bezier(.16,1,.3,1);
+      filter: brightness(1.05) saturate(1.05);
+    }
+    .story-img-cell:hover img { transform: scale(1.05); }
+    .story-img-cell:first-child {
+      grid-column: 1 / -1;
+      min-height: 300px;
+    }
+    @media (max-width: 860px) {
+      .story { grid-template-columns: 1fr; }
+      .story-img-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .story-img-cell:first-child { grid-column: 1 / -1; min-height: 220px; }
+    }
+
+    /* ─── VALUES STRIP ──────────────────────────────────────────────────── */
+    .values {
+      background: var(--bg);
+      border-top: 1px solid rgba(205,198,190,.07);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+    }
+    .values-inner {
+      max-width: 1440px; margin: 0 auto;
+      padding: clamp(60px,8vh,100px) clamp(24px,5vw,72px);
+    }
+    .values-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0; margin-top: clamp(40px,5vh,60px);
+      border-left: 1px solid rgba(205,198,190,.07);
+    }
+    .value-item {
+      padding: clamp(32px,4vw,52px);
+      border-right: 1px solid rgba(205,198,190,.07);
+      border-bottom: 1px solid rgba(205,198,190,.07);
+      display: flex; flex-direction: column; gap: 16px;
+      transition: background .35s;
+    }
+    .value-item:hover { background: var(--bg-card); }
+    .value-icon { width: 28px; height: 28px; color: var(--sage); }
+    .value-title {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(22px,2.4vw,34px); color: var(--white); line-height: 1.05;
+    }
+    .value-desc {
+      font-size: clamp(12px,1.05vw,14px); font-weight: 300; color: var(--dim); line-height: 1.8;
+    }
+    @media (max-width: 768px) { .values-grid { grid-template-columns: 1fr; } }
+
+    /* ─── AWARD FEATURE ─────────────────────────────────────────────────── */
+    .award {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-top: 1px solid rgba(205,198,190,.07);
+    }
+    .award-content {
+      background: var(--bg-card);
+      padding: clamp(60px,8vh,100px) clamp(40px,5vw,80px);
+      display: flex; flex-direction: column; justify-content: center; gap: 24px;
+    }
+    .award-badge {
+      display: inline-flex; align-items: center; gap: 12px;
+      border: 1px solid rgba(184,50,50,.35);
+      padding: 10px 18px; width: fit-content;
+    }
+    .award-badge-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--sage);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+    .award-badge-text {
+      font-family: var(--sans); font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--sage);
+    }
+    .award-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(32px,4vw,58px); color: var(--white); line-height: 1.0;
+    }
+    .award-headline em { font-style: italic; color: var(--beige); }
+    .award-desc {
+      font-size: clamp(13px,1.15vw,15px); font-weight: 300; color: var(--dim);
+      line-height: 1.85; max-width: 480px;
+      border-top: 1px solid rgba(205,198,190,.1); padding-top: 20px;
+    }
+    .award-stats {
+      display: flex; gap: 40px; margin-top: 8px;
+    }
+    .award-stat-num {
+      font-family: var(--serif); font-size: clamp(28px,3vw,44px);
+      font-weight: 300; color: var(--white); line-height: 1;
+    }
+    .award-stat-num span { color: var(--sage); }
+    .award-stat-label {
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .2em;
+      text-transform: uppercase; color: var(--dim); margin-top: 5px;
+    }
+    .award-img {
+      overflow: hidden; position: relative;
+    }
+    .award-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: brightness(0.9) saturate(1.1);
+      transition: transform .8s cubic-bezier(.16,1,.3,1);
+    }
+    .award-img:hover img { transform: scale(1.04); }
+    @media (max-width: 860px) {
+      .award { grid-template-columns: 1fr; }
+      .award-img { min-height: 280px; }
+    }
+
+    /* ─── REVIEWS WALL ──────────────────────────────────────────────────── */
+    .reviews-section {
+      background: var(--bg);
+      border-top: 1px solid rgba(205,198,190,.07);
+    }
+    .reviews-inner {
+      max-width: 1440px; margin: 0 auto;
+      padding: clamp(60px,8vh,100px) clamp(24px,5vw,72px);
+    }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: rgba(205,198,190,.07);
+      border: 1px solid rgba(205,198,190,.07);
+      margin-top: clamp(40px,5vh,60px);
+    }
+    .review-card {
+      background: var(--bg-card);
+      padding: clamp(28px,3vw,44px);
+      display: flex; flex-direction: column; gap: 16px;
+      transition: background .3s;
+    }
+    .review-card:hover { background: var(--bg-hover); }
+    .review-stars { color: var(--sage); font-size: 11px; letter-spacing: 3px; }
+    .review-quote {
+      font-family: var(--serif); font-size: clamp(15px,1.4vw,19px);
+      font-style: italic; font-weight: 300; color: var(--beige);
+      line-height: 1.65; flex: 1;
+    }
+    .review-author {
+      font-family: var(--sans); font-size: 10px; font-weight: 500;
+      letter-spacing: .15em; text-transform: uppercase; color: var(--dim);
+      padding-top: 16px; border-top: 1px solid rgba(205,198,190,.1);
+    }
+    .review-source {
+      font-size: 9px; letter-spacing: .2em; color: var(--sage);
+      text-transform: uppercase; margin-top: 3px;
+    }
+    @media (max-width: 768px) { .reviews-grid { grid-template-columns: 1fr; } }
+
+    /* ─── CTA ───────────────────────────────────────────────────────────── */
+    .cta-banner {
+      position: relative; overflow: hidden;
+      padding: clamp(72px,10vh,120px) clamp(24px,5vw,72px);
+      background: var(--bg-card); border-top: 1px solid rgba(205,198,190,.07);
+      text-align: center;
+    }
+    .cta-wm {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      pointer-events: none; z-index: 0;
+    }
+    .cta-wm img { width: min(50%, 480px); opacity: 0.05; mix-blend-mode: screen; filter: invert(1); }
+    .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .cta-label {
+      font-family: var(--sans); font-size: clamp(9px,.8vw,11px);
+      letter-spacing: .35em; text-transform: uppercase; color: var(--sage); margin-bottom: 20px;
+    }
+    .cta-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(38px,5vw,80px); color: var(--white); line-height: .95;
+      letter-spacing: -.02em; margin-bottom: 28px;
+    }
+    .cta-headline em { font-style: italic; color: var(--beige); }
+    .cta-sub {
+      font-size: clamp(13px,1.2vw,16px); font-weight: 300; color: var(--dim);
+      line-height: 1.75; margin-bottom: 40px;
+    }
+    .cta-row { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-block; padding: 14px 40px;
+      font-family: var(--sans); font-size: clamp(10px,.9vw,12px);
+      font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--bg); background: var(--beige); text-decoration: none;
+      transition: background .3s, transform .3s;
+    }
+    .btn-primary:hover { background: var(--sage); transform: translateY(-2px); }
+    .btn-ghost {
+      font-family: var(--sans); font-size: clamp(10px,.9vw,12px);
+      font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; position: relative; padding-bottom: 2px;
+      transition: color .3s;
+    }
+    .btn-ghost::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: currentColor; transform: scaleX(1); transform-origin: left;
+    }
+    .btn-ghost:hover { color: var(--beige); }
+
+    /* ─── FOOTER ────────────────────────────────────────────────────────── */
+    footer { background: var(--bg-card); border-top: 1px solid rgba(205,198,190,.08); }
+    .footer-marquee-wrap {
+      overflow: hidden; padding: clamp(14px,1.8vh,22px) 0;
+      border-bottom: 1px solid rgba(205,198,190,.07);
+    }
+    .footer-marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .footer-marquee-item {
+      font-family: var(--sans); font-size: clamp(10px,0.9vw,13px);
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--beige); white-space: nowrap; padding: 0 clamp(20px,2.5vw,40px); opacity: .35;
+    }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      padding: clamp(20px,2.5vh,32px) clamp(24px,5vw,72px);
+    }
+    .footer-copy { font-size: clamp(10px,.85vw,12px); color: var(--dim); letter-spacing: .08em; }
+    .footer-socials { display: flex; gap: 24px; }
+    .footer-socials a {
+      font-size: clamp(10px,.85vw,12px); letter-spacing: .15em; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; transition: color .25s;
+    }
+    .footer-socials a:hover { color: var(--beige); }
+
+    /* ─── REVEAL ────────────────────────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="tel:+17052508500">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.45 11.45 0 003.58.57 1 1 0 011 1V21a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.45 11.45 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+        (705) 250-8500
+      </a>
+      <a href="mailto:allistontailoring@gmail.com">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        allistontailoring@gmail.com
+      </a>
+      <a href="https://maps.google.com/?q=176+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="topbar-location">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        176 Victoria St E, Alliston
+      </a>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="logo.jpg" alt="Alliston Tailoring & Alterations" />
+    </a>
+    <span class="nav-title">Alliston Tailoring &amp; Alterations</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-book">Book a Fitting</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="about-hero">
+    <div class="about-hero-img">
+      <img src="gallery/photo_25.jpg" alt="Alliston Tailoring studio neon sign" />
+    </div>
+    <div class="about-hero-content">
+      <div class="about-hero-inner">
+        <p class="page-eyebrow reveal">Our Story</p>
+        <h1 class="page-headline reveal reveal-delay-1">More than<br>a stitch.<br><em>A legacy.</em></h1>
+        <p class="page-sub reveal reveal-delay-2">
+          Since 2008, <em>Alliston Tailoring &amp; Alterations</em> has been the trusted name in precision garment care for Alliston and Simcoe County. A husband-and-wife studio built on craft, care, and community.
+        </p>
+        <div class="hero-est reveal reveal-delay-3">
+          <div>
+            <div class="hero-stat-num">16<span>+</span></div>
+            <div class="hero-stat-label">Years in business</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">500<span>+</span></div>
+            <div class="hero-stat-label">Happy customers</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">4.8<span>★</span></div>
+            <div class="hero-stat-label">Google rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section class="story">
+    <div class="story-text reveal">
+      <p class="section-label">Est. 2008</p>
+      <h2 class="section-headline">Family-run.<br><em>Community trusted.</em></h2>
+      <div class="story-body">
+        <p>What started as a passion for precision has grown into <em>Alliston's most trusted alterations studio</em>. Hossain and his wife opened their doors in 2008 with a simple belief — every garment deserves to fit perfectly, and every customer deserves to feel their best.</p>
+        <p>Over sixteen years, that belief has never wavered. From emergency wedding dress alterations to leather jacket repairs, they approach every job with the same dedication and personal care that made their reputation in the first place.</p>
+        <p>They've dressed brides, grooms, prom nights, job interviews, and everything in between. <em>This is not just a shop. It is a studio built on trust, skill, and the quiet pride of work done right.</em></p>
+      </div>
+    </div>
+    <div class="story-img-grid">
+      <div class="story-img-cell reveal">
+        <img src="gallery/photo_22.jpg" alt="Studio interior" loading="lazy" />
+      </div>
+      <div class="story-img-cell reveal reveal-delay-1">
+        <img src="gallery/photo_24.jpg" alt="Suits on display" loading="lazy" />
+      </div>
+      <div class="story-img-cell reveal reveal-delay-2">
+        <img src="gallery/photo_20.jpg" alt="Dry cleaning rack" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values">
+    <div class="values-inner">
+      <p class="section-label reveal">What drives us</p>
+      <h2 class="section-headline reveal reveal-delay-1">The values behind<br><em>every single stitch</em></h2>
+      <div class="values-grid">
+        <div class="value-item reveal reveal-delay-1">
+          <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+          <h3 class="value-title">Precision First</h3>
+          <p class="value-desc">Every alteration is measured twice and executed with care. We never rush — because your garment deserves the time it takes to get it exactly right.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-2">
+          <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <h3 class="value-title">Personal Care</h3>
+          <p class="value-desc">You are not a number here. Hossain and his wife take time to understand every customer's needs — and don't stop until you walk out feeling great.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-3">
+          <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <h3 class="value-title">Fast Turnaround</h3>
+          <p class="value-desc">Most alterations are ready in 1–3 business days. When you need it faster, we make it happen — emergency fittings are part of the service.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-1">
+          <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <h3 class="value-title">Community Roots</h3>
+          <p class="value-desc">We are part of Alliston. Many of our customers have been coming for a decade or more — families, generations, neighbours. That relationship means everything to us.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-2">
+          <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <h3 class="value-title">Fair &amp; Honest</h3>
+          <p class="value-desc">Transparent pricing, no surprises. We've saved customers thousands by giving them an honest quote — and the results to back it up.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-3">
+          <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <h3 class="value-title">All Garments</h3>
+          <p class="value-desc">From delicate bridal gowns to rugged leather jackets — if it is sewn, we can alter it. No job is too small or too complex for this studio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AWARD -->
+  <section class="award">
+    <div class="award-content reveal">
+      <div class="award-badge">
+        <div class="award-badge-dot"></div>
+        <span class="award-badge-text">Readers' Choice · Simcoe County 2025</span>
+      </div>
+      <h2 class="award-headline">Platinum Award<br><em>Best Men's Fashion</em></h2>
+      <p class="award-desc">
+        Voted Platinum Winner for Best Men's Fashion in New Tecumseth by Simcoe County readers — recognition that reflects sixteen years of dedication to craft, community, and customers who keep coming back.
+      </p>
+      <div class="award-stats">
+        <div>
+          <div class="award-stat-num">2025<span></span></div>
+          <div class="award-stat-label">Platinum Winner</div>
+        </div>
+        <div>
+          <div class="award-stat-num">4.8<span>★</span></div>
+          <div class="award-stat-label">Google Rated</div>
+        </div>
+      </div>
+    </div>
+    <div class="award-img reveal reveal-delay-1">
+      <img src="gallery/photo_00.jpg" alt="Readers Choice Platinum Award 2025" loading="lazy" />
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews-section">
+    <div class="reviews-inner">
+      <p class="section-label reveal">In their own words</p>
+      <h2 class="section-headline reveal reveal-delay-1">What Alliston<br><em>is saying about us</em></h2>
+      <div class="reviews-grid">
+        <div class="review-card reveal reveal-delay-1">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"I went to remake my mother's wedding dress into my rehearsal dinner dress as a surprise for my parents. The owners were so helpful and understanding and worked with my budget. I highly recommend this place."</p>
+          <div>
+            <div class="review-author">— Shantel L.</div>
+            <div class="review-source">Google Review</div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-2">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Came to Alliston Tailoring for 8 suits for myself and my groomsmen. Hossain and his wife were absolutely amazing through the whole process! Very reasonable and exceptional work. Highly recommend."</p>
+          <div>
+            <div class="review-author">— Amit J.</div>
+            <div class="review-source">Google Review</div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-3">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"They suggested adding 2 extra bustles, added glitter fabric to the bust, removed tulle, hemmed and took in the sides — all exactly how I imagined. Thank you for helping make my dress everything I wanted."</p>
+          <div>
+            <div class="review-author">— Anonymous Bride</div>
+            <div class="review-source">Google Review</div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-1">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"This beautiful establishment run by a husband and wife. They're so understanding and absolutely the nicest people I've ever met. I will definitely be going here and recommending it for the rest of my life."</p>
+          <div>
+            <div class="review-author">— Zandra W.</div>
+            <div class="review-source">Google Review</div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-2">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Over the last couple of years I've taken many items to be altered and all done to complete satisfaction. 5 bridesmaid dresses altered and all done with complete precision. Thank you for such great work."</p>
+          <div>
+            <div class="review-author">— Karen Z.</div>
+            <div class="review-source">Google Review</div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-3">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"The team not only made all the alterations they went above to get the blood marks out. We took the dress on Monday for a wedding that Saturday and they had the dress finished in 3 days. Beyond grateful."</p>
+          <div>
+            <div class="review-author">— Rebecca M.</div>
+            <div class="review-source">Google Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="cta-wm" aria-hidden="true">
+      <img src="logo_graphic.png" alt="" />
+    </div>
+    <div class="cta-inner">
+      <p class="cta-label reveal">Come visit us</p>
+      <h2 class="cta-headline reveal reveal-delay-1">Let's work on<br><em>something together.</em></h2>
+      <p class="cta-sub reveal reveal-delay-2">176 Victoria St E, Alliston · Monday – Saturday · Walk-ins welcome</p>
+      <div class="cta-row reveal reveal-delay-3">
+        <a href="index.html#contact" class="btn-primary">Book a Fitting</a>
+        <a href="services.html" class="btn-ghost">View Our Services →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-marquee-wrap" aria-hidden="true">
+      <div class="footer-marquee-track">
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+        <span class="footer-marquee-item">Alliston Tailoring &amp; Alterations · Precision in every stitch · Est. 2008 · Alliston, Ontario · </span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Alliston Tailoring &amp; Alterations. All rights reserved.</p>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/allistontailoring/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/p/Alliston-Tailoring-Alterations-100063487421506/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    });
+    (function animRing() {
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

@@ -145,9 +145,9 @@
     }
 
     .nav-title {
-      font-family: var(--serif); font-size: clamp(16px, 1.6vw, 22px);
-      font-weight: 300; font-style: italic; letter-spacing: 0.08em;
-      color: var(--white); opacity: 0.88;
+      font-family: var(--serif); font-size: clamp(20px, 2.2vw, 32px);
+      font-weight: 400; font-style: italic; letter-spacing: 0.06em;
+      color: var(--white); opacity: 1;
       text-align: center; white-space: nowrap; pointer-events: none;
     }
     .nav-title-short { display: none; }
@@ -211,33 +211,103 @@
 
     /* ─── HERO ──────────────────────────────────────────────────────────── */
     .hero {
-      display: grid; grid-template-columns: 55fr 45fr;
+      display: grid; grid-template-columns: 63fr 37fr;
       min-height: 100vh; overflow: hidden;
     }
     .hero-left {
       position: relative; overflow: hidden; min-width: 0;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 clamp(24px, 5vw, 72px) clamp(48px, 8vh, 100px);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(100px, 12vh, 140px) clamp(24px, 5vw, 72px) clamp(80px, 10vh, 120px);
     }
     .hero-bg {
       position: absolute; inset: 0; overflow: hidden; z-index: 0;
     }
-    .hero-photo-panel {
+    /* ─── HERO VISUAL PANEL ───────────────────────────────────────────── */
+    .hero-visual {
       position: relative; overflow: hidden; min-width: 0;
     }
-    .hero-photo-panel img {
+    /* gradient bleed into hero-left */
+    .hero-visual::before {
+      content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: linear-gradient(to right, var(--bg) 0%, var(--bg) 5%, transparent 42%),
+                  linear-gradient(to top, var(--bg) 0%, transparent 22%);
+    }
+    /* sweep line on transition */
+    .hero-visual::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--sage), transparent);
+      z-index: 9; pointer-events: none; left: -4px; opacity: 0;
+    }
+    .hero-visual.sweeping::after {
+      animation: hvSweep .65s cubic-bezier(.76,0,.24,1) forwards;
+    }
+    @keyframes hvSweep {
+      0%   { left: -4px; opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: .7; }
+      100% { left: calc(100% + 4px); opacity: 0; }
+    }
+    /* slides */
+    .hv-slide {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity .28s ease; z-index: 1;
+    }
+    .hv-slide.active { opacity: 1; z-index: 2; }
+    .hv-slide img {
       width: 100%; height: 100%; object-fit: cover; display: block;
-      filter: brightness(.9) saturate(1.05) contrast(1.05);
+      transform: scale(1.0); will-change: transform;
+      transition: transform 3s cubic-bezier(.16,1,.3,1);
+      filter: brightness(1.05) saturate(1.05) contrast(1.02);
     }
-    .hero-photo-panel::after {
-      content: '';
-      position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(to right, var(--bg) 0%, var(--bg) 5%, transparent 55%),
-                  linear-gradient(to top, var(--bg) 0%, transparent 28%);
+    .hv-slide.active img { transform: scale(1.05); }
+    /* ui overlay */
+    .hv-ui {
+      position: absolute; inset: 0; z-index: 5; pointer-events: none;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: clamp(28px,4vh,52px) clamp(28px,3.5vw,52px);
     }
+    /* service label */
+    .hv-label { display: none; }
+    .hv-label-inner {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      border: 1px solid rgba(184,50,50,.35);
+      background: rgba(17,17,16,.6); backdrop-filter: blur(10px);
+      font-family: var(--sans); font-size: 10px;
+      letter-spacing: .25em; text-transform: uppercase; color: var(--beige);
+      transform: translateY(0); opacity: 1;
+      transition: transform .55s cubic-bezier(.16,1,.3,1), opacity .45s;
+    }
+    .hv-label-inner::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--sage); flex-shrink: 0;
+      animation: labelPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes labelPulse {
+      0%,100% { opacity: 1; } 50% { opacity: .35; }
+    }
+    .hv-label-inner.out { transform: translateY(16px); opacity: 0; }
+    /* bottom row */
+    .hv-bottom {
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    /* counter */
+    .hv-counter { display: none; }
+    .hv-counter-current {
+      font-size: clamp(36px,4vw,56px); color: var(--beige); line-height: 1;
+      display: block; overflow: hidden;
+      transition: transform .45s cubic-bezier(.16,1,.3,1), opacity .35s;
+    }
+    .hv-counter-current.flip { transform: translateY(-110%); opacity: 0; }
+    .hv-counter-sep { color: var(--sage); font-size: 12px; margin: 0 3px; }
+    .hv-counter-total { font-size: clamp(11px,.9vw,14px); color: var(--dim); }
+    /* dots */
+    .hv-dots { display: none; }
+    /* bottom progress */
+    .hv-progress { display: none; }
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
-      .hero-photo-panel { display: none; }
+      .hero-visual { display: none; }
     }
     .hero-bg::before, .hero-bg::after {
       content: ''; position: absolute; inset: -50%;
@@ -256,9 +326,9 @@
     .hero-content { position: relative; z-index: 2; }
     .hero-logo-watermark {
       position: absolute;
-      top: 38%; left: 50%;
+      top: 54%; left: 46%;
       transform: translate(-50%, -50%);
-      width: min(92%, 560px);
+      width: min(96%, 600px);
       z-index: 0; pointer-events: none;
     }
     .hero-logo-watermark img {
@@ -274,33 +344,31 @@
       background: linear-gradient(to top, var(--bg) 42%, transparent 100%);
     }
     .hero-credentials {
-      position: absolute;
-      top: clamp(24px, 4vh, 48px);
-      left: clamp(24px, 5vw, 72px);
-      z-index: 2;
-      display: flex; flex-direction: column; gap: 12px;
+      display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px;
+      margin-top: clamp(28px, 4vh, 44px);
+      position: relative; z-index: 2;
     }
     .hero-cred-pill {
-      display: inline-flex; align-items: center; gap: 10px;
-      border: 1px solid rgba(205,198,190,.15);
-      background: rgba(17,17,16,.55);
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(205,198,190,.35);
+      background: var(--bg-card);
       backdrop-filter: blur(8px);
-      padding: 10px 16px;
+      padding: 8px 14px;
       border-radius: 2px;
       width: fit-content;
     }
     .hero-cred-icon {
-      color: var(--sage); font-size: 14px; flex-shrink: 0;
+      color: var(--sage); font-size: 12px; flex-shrink: 0;
     }
     .hero-cred-text {
       display: flex; flex-direction: column; gap: 1px;
     }
     .hero-cred-title {
-      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
       letter-spacing: .08em; text-transform: uppercase; color: var(--white);
     }
     .hero-cred-sub {
-      font-family: var(--sans); font-size: 10px; color: var(--dim);
+      font-family: var(--sans); font-size: 9px; color: var(--beige);
       letter-spacing: .04em;
     }
 
@@ -373,6 +441,53 @@
     @keyframes scrollPulse {
       0%, 100% { opacity: .3; transform: scaleY(1); }
       50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ─── HERO FLOATING REVIEWS ─────────────────────────────────────────── */
+    .hero-reviews {
+      position: fixed;
+      top: clamp(175px, 21vh, 220px);
+      left: clamp(24px, 5vw, 72px);
+      width: clamp(228px, 22vw, 272px);
+      z-index: 800; pointer-events: none;
+    }
+    .hr-card {
+      position: absolute; top: 0; left: 0; width: 100%;
+      background: var(--bg-card);
+      border: 1px solid rgba(205,198,190,.2);
+      backdrop-filter: blur(14px);
+      padding: 14px 18px 12px;
+      box-shadow: 0 6px 28px rgba(0,0,0,.14), 0 1px 4px rgba(0,0,0,.08);
+      opacity: 0; transform: translateX(-108%);
+      transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);
+    }
+    .hr-card.hr-show { opacity: 1; transform: translateX(0); }
+    .hr-card.hr-hide  { opacity: 0; transform: translateX(-108%);
+      transition: opacity .38s ease, transform .38s ease; }
+    .hr-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .hr-stars { color: var(--sage); font-size: 10px; letter-spacing: 3px; }
+    .hr-badge {
+      font-family: var(--sans); font-size: 8px; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--dim); opacity: .65;
+    }
+    .hr-quote {
+      font-family: var(--serif); font-size: clamp(12px,1.05vw,14px);
+      font-style: italic; font-weight: 300; color: var(--beige);
+      line-height: 1.55; margin-bottom: 10px;
+    }
+    .hr-author {
+      font-family: var(--sans); font-size: 9px; font-weight: 500;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--dim);
+    }
+    .hr-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 1px; background: rgba(205,198,190,.1); overflow: hidden;
+    }
+    .hr-bar-fill {
+      height: 100%; width: 0; background: var(--sage);
     }
 
     /* ─── KEYFRAMES ─────────────────────────────────────────────────────── */
@@ -509,10 +624,27 @@
     .reveal-delay-5 { transition-delay: .5s; }
     .reveal-delay-6 { transition-delay: .6s; }
 
+    /* ─── SECTION WATERMARKS ───────────────────────────────────────────── */
+    .services, .value-props, .reviews, .pricing, .contact {
+      position: relative; overflow: hidden;
+    }
+    .sec-wm {
+      position: absolute; pointer-events: none; z-index: 0;
+    }
+    .sec-wm img {
+      display: block; width: 100%;
+      filter: none;
+      mix-blend-mode: multiply; opacity: 0.08;
+    }
+
     /* ─── SERVICES GRID ─────────────────────────────────────────────────── */
     .services { background: var(--bg); }
+    .services > .section-label,
+    .services > .section-headline {
+      position: relative; z-index: 1;
+    }
     .services-grid {
-      display: grid;
+      display: grid; position: relative; z-index: 1;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px; background: rgba(205,198,190,.07);
       border: 1px solid rgba(205,198,190,.07);
@@ -526,15 +658,15 @@
     }
     .service-card:hover { background: var(--bg-hover); transform: translateY(-3px); }
     .service-card-img {
-      height: 175px; overflow: hidden; flex-shrink: 0;
+      height: 300px; overflow: hidden; flex-shrink: 0;
     }
     .service-card-img img {
       width: 100%; height: 100%; object-fit: cover; display: block;
-      filter: brightness(.95) saturate(.95);
+      filter: brightness(1.08) saturate(1.05);
       transition: transform .6s cubic-bezier(.16,1,.3,1), filter .45s;
     }
     .service-card:hover .service-card-img img {
-      transform: scale(1.06); filter: brightness(1) saturate(1);
+      transform: scale(1.06); filter: brightness(1.12) saturate(1.1);
     }
     .service-card-body {
       padding: clamp(22px,2.6vw,34px) clamp(28px,3.5vw,44px);
@@ -723,16 +855,16 @@
       font-family: var(--serif); font-weight: 300;
       font-size: clamp(22px,2.4vw,34px); color: var(--white); line-height: 1.1;
     }
-    .pricing-from {
-      font-size: clamp(10px,.85vw,12px); letter-spacing: .15em;
-      text-transform: uppercase; color: var(--dim); margin-top: 4px;
+    .pricing-custom {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 6px;
+      font-family: var(--sans); font-size: clamp(9px,.8vw,11px);
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--sage); border: 1px solid rgba(184,50,50,.3);
+      padding: 7px 14px; width: fit-content;
     }
-    .pricing-price {
-      font-family: var(--serif); font-size: clamp(36px,4vw,56px);
-      font-weight: 300; color: var(--beige); line-height: 1;
-    }
-    .pricing-price sup {
-      font-size: .45em; vertical-align: super; color: var(--dim);
+    .pricing-custom::before {
+      content: '✦'; font-size: 8px;
     }
     .pricing-desc {
       font-size: clamp(11px,1vw,13px); font-weight: 300; color: var(--dim);
@@ -1021,18 +1153,17 @@
     <span class="nav-title"><span class="nav-title-full">Alliston Tailoring &amp; Alterations</span><span class="nav-title-short">Alliston T &amp; A</span></span>
     <ul class="nav-links">
       <li class="nav-has-dropdown">
-        <a href="#services">Services</a>
+        <a href="services.html">Services</a>
         <div class="nav-dropdown">
-          <a href="#services">Formalwear &amp; Bridal</a>
-          <a href="#services">Hemming</a>
-          <a href="#services">Resizing &amp; Alterations</a>
-          <a href="#services">Suit Tailoring</a>
-          <a href="#services">Zipper &amp; Repairs</a>
-          <a href="#services">Leather Work</a>
+          <a href="services.html#formalwear">Formalwear &amp; Bridal</a>
+          <a href="services.html#hemming">Hemming</a>
+          <a href="services.html#resizing">Resizing &amp; Alterations</a>
+          <a href="services.html#suits">Suit Tailoring</a>
+          <a href="services.html#repairs">Zipper &amp; Repairs</a>
+          <a href="services.html#leather">Leather Work</a>
         </div>
       </li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#gallery">Our Work</a></li>
+      <li><a href="about.html">About</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#reviews">Reviews</a></li>
       <li><a href="#contact" class="nav-book">Book Now</a></li>
@@ -1078,32 +1209,58 @@
     <div class="hero-left">
       <div class="hero-bg"></div>
       <div class="hero-glow"></div>
-      <div class="hero-credentials">
-        <div class="hero-cred-pill">
-          <span class="hero-cred-icon">★</span>
-          <div class="hero-cred-text">
-            <span class="hero-cred-title">Readers' Choice Platinum</span>
-            <span class="hero-cred-sub">Simcoe County · 2025</span>
-          </div>
-        </div>
-        <div class="hero-cred-pill">
-          <span class="hero-cred-icon">★★★★★</span>
-          <div class="hero-cred-text">
-            <span class="hero-cred-title">Google Rated 4.8</span>
-            <span class="hero-cred-sub">500+ happy customers</span>
-          </div>
-        </div>
-        <div class="hero-cred-pill">
-          <span class="hero-cred-icon">✦</span>
-          <div class="hero-cred-text">
-            <span class="hero-cred-title">Family-Run Since 2008</span>
-            <span class="hero-cred-sub">Alliston's trusted alterations studio</span>
-          </div>
-        </div>
-      </div>
       <div class="hero-logo-watermark" aria-hidden="true">
         <img src="logo_graphic.png" alt="" />
       </div>
+      <!-- floating review rotator -->
+      <div class="hero-reviews" aria-hidden="true">
+        <div class="hr-card">
+          <div class="hr-top">
+            <span class="hr-stars">★★★★★</span>
+            <span class="hr-badge">Google Review</span>
+          </div>
+          <p class="hr-quote">"They altered my wedding dress perfectly. I cried when I put it on — it was exactly right."</p>
+          <span class="hr-author">— Sarah M.</span>
+          <div class="hr-bar"><div class="hr-bar-fill"></div></div>
+        </div>
+        <div class="hr-card">
+          <div class="hr-top">
+            <span class="hr-stars">★★★★★</span>
+            <span class="hr-badge">Google Review</span>
+          </div>
+          <p class="hr-quote">"Fixed my suit the day before my interview. Absolute lifesavers — and it fit like a glove."</p>
+          <span class="hr-author">— James K.</span>
+          <div class="hr-bar"><div class="hr-bar-fill"></div></div>
+        </div>
+        <div class="hr-card">
+          <div class="hr-top">
+            <span class="hr-stars">★★★★★</span>
+            <span class="hr-badge">Google Review</span>
+          </div>
+          <p class="hr-quote">"Been coming here for over ten years. The quality never drops, and neither does the care."</p>
+          <span class="hr-author">— Linda T.</span>
+          <div class="hr-bar"><div class="hr-bar-fill"></div></div>
+        </div>
+        <div class="hr-card">
+          <div class="hr-top">
+            <span class="hr-stars">★★★★★</span>
+            <span class="hr-badge">Google Review</span>
+          </div>
+          <p class="hr-quote">"Every piece I bring in comes back fitting like it was made for me. Truly the best in town."</p>
+          <span class="hr-author">— Rachel B.</span>
+          <div class="hr-bar"><div class="hr-bar-fill"></div></div>
+        </div>
+        <div class="hr-card">
+          <div class="hr-top">
+            <span class="hr-stars">★★★★★</span>
+            <span class="hr-badge">Google Review</span>
+          </div>
+          <p class="hr-quote">"Most professional alteration studio in Simcoe County. Fast, precise, and always a pleasure."</p>
+          <span class="hr-author">— David P.</span>
+          <div class="hr-bar"><div class="hr-bar-fill"></div></div>
+        </div>
+      </div>
+
       <div class="hero-content">
         <p class="hero-eyebrow">Alliston, Ontario · Est. 2008</p>
         <h1 class="hero-headline">
@@ -1115,7 +1272,30 @@
         </p>
         <div class="hero-cta-row">
           <a href="#contact" class="btn-primary">Book a Fitting</a>
-          <a href="#services" class="btn-ghost">Explore Services →</a>
+          <a href="services.html" class="btn-ghost">Explore Services →</a>
+        </div>
+        <div class="hero-credentials">
+          <div class="hero-cred-pill">
+            <span class="hero-cred-icon">★</span>
+            <div class="hero-cred-text">
+              <span class="hero-cred-title">Readers' Choice Platinum</span>
+              <span class="hero-cred-sub">Simcoe County · 2025</span>
+            </div>
+          </div>
+          <div class="hero-cred-pill">
+            <span class="hero-cred-icon">★★★★★</span>
+            <div class="hero-cred-text">
+              <span class="hero-cred-title">Google Rated 4.8</span>
+              <span class="hero-cred-sub">500+ happy customers</span>
+            </div>
+          </div>
+          <div class="hero-cred-pill">
+            <span class="hero-cred-icon">✦</span>
+            <div class="hero-cred-text">
+              <span class="hero-cred-title">Family-Run Since 2008</span>
+              <span class="hero-cred-sub">Alliston's trusted alterations studio</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="hero-scroll" aria-hidden="true">
@@ -1123,8 +1303,48 @@
         <div class="scroll-line"></div>
       </div>
     </div>
-    <div class="hero-photo-panel">
-      <img src="gallery/photo_19.jpg" alt="Bridal alterations craftsmanship" />
+    <div class="hero-visual" id="heroVisual">
+
+      <div class="hv-slide active" data-label="Bridal Gowns">
+        <img src="gallery/photo_34.jpg" alt="Bridal Gowns" style="object-position:center top;" />
+      </div>
+      <div class="hv-slide" data-label="Bridal Alterations">
+        <img src="gallery/photo_19.jpg" alt="Bridal Alterations" style="object-position:center top;" />
+      </div>
+      <div class="hv-slide" data-label="Bespoke Tailoring">
+        <img src="gallery/photo_26.jpg" alt="Bespoke Tailoring" style="object-position:center center;" />
+      </div>
+      <div class="hv-slide" data-label="Hemming & Alterations">
+        <img src="gallery/photo_33.jpg" alt="Hemming & Alterations" style="object-position:center center;" />
+      </div>
+      <div class="hv-slide" data-label="Our Studio">
+        <img src="gallery/photo_25.jpg" alt="Our Studio" style="object-position:center center;" />
+      </div>
+
+      <div class="hv-ui">
+        <div class="hv-label">
+          <div class="hv-label-inner" id="hvLabel">Bridal Alterations</div>
+        </div>
+        <div class="hv-bottom">
+          <div class="hv-counter">
+            <span class="hv-counter-current" id="hvCounter">01</span>
+            <span class="hv-counter-sep">/</span>
+            <span class="hv-counter-total">05</span>
+          </div>
+          <div class="hv-dots">
+            <button class="hv-dot active" data-idx="0" aria-label="Slide 1"></button>
+            <button class="hv-dot" data-idx="1" aria-label="Slide 2"></button>
+            <button class="hv-dot" data-idx="2" aria-label="Slide 3"></button>
+            <button class="hv-dot" data-idx="3" aria-label="Slide 4"></button>
+            <button class="hv-dot" data-idx="4" aria-label="Slide 5"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hv-progress">
+        <div class="hv-progress-fill" id="hvProgress"></div>
+      </div>
+
     </div>
   </section>
 
@@ -1154,8 +1374,8 @@
     </div>
   </div>
 
-  <!-- ─── FEATURE BOXES ───────────────────────────────────────────────── -->
-  <div class="feature-boxes-wrap" aria-hidden="true">
+  <!-- feature boxes removed -->
+  <div class="feature-boxes-wrap" aria-hidden="true" style="display:none">
     <div class="feature-boxes-track">
       <div class="feature-box">
         <svg class="feature-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 8l3 2v12h10V10l3-2-4-6"/><path d="M8 2l4 6 4-6"/><path d="M11 8l1 3 1-3"/></svg>
@@ -1243,14 +1463,15 @@
 
   <!-- ─── SERVICES ──────────────────────────────────────────────────────── -->
   <section class="services" id="services">
+    <div class="sec-wm" aria-hidden="true" style="width:680px;top:-20px;left:50%;transform:translateX(-50%) rotate(3deg);opacity:1;"><img src="logo_graphic.png" alt="" style="opacity:0.1;mix-blend-mode:multiply;" /></div>
     <p class="section-label reveal">What We Do</p>
     <h2 class="section-headline reveal reveal-delay-1">
       Every garment,<br><em>perfectly fitted</em>
     </h2>
     <div class="services-grid">
-      <a class="service-card reveal reveal-delay-1" href="#contact">
+      <a class="service-card reveal reveal-delay-1" href="services.html">
         <div class="service-card-img">
-          <img src="gallery/photo_29.jpg" alt="Formalwear & Bridal" loading="lazy" />
+          <img src="gallery/photo_32.jpg" alt="Formalwear & Bridal" loading="lazy" style="object-fit:cover; object-position:center top;" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 8l3 2v12h10V10l3-2-4-6"/><path d="M8 2l4 6 4-6"/><path d="M11 8l1 3 1-3"/></svg>
@@ -1260,7 +1481,7 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-2" href="#contact">
+      <a class="service-card reveal reveal-delay-2" href="services.html">
         <div class="service-card-img">
           <img src="gallery/photo_26.jpg" alt="Suit Tailoring" loading="lazy" />
         </div>
@@ -1272,7 +1493,7 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-3" href="#contact">
+      <a class="service-card reveal reveal-delay-3" href="services.html">
         <div class="service-card-img">
           <img src="gallery/photo_23.jpg" alt="Prom" loading="lazy" />
         </div>
@@ -1284,7 +1505,7 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-4" href="#contact">
+      <a class="service-card reveal reveal-delay-4" href="services.html">
         <div class="service-card-img">
           <img src="gallery/photo_20.jpg" alt="Dry Cleaning" loading="lazy" />
         </div>
@@ -1296,9 +1517,9 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-1" href="#contact">
+      <a class="service-card reveal reveal-delay-1" href="services.html">
         <div class="service-card-img">
-          <img src="gallery/photo_15.jpg" alt="Hemming" loading="lazy" />
+          <img src="gallery/photo_28.jpg" alt="Hemming" loading="lazy" style="filter:brightness(1.35) saturate(1.1) contrast(1.08);" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="9.53" x2="20" y2="20"/></svg>
@@ -1308,9 +1529,9 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-2" href="#contact">
+      <a class="service-card reveal reveal-delay-2" href="services.html">
         <div class="service-card-img">
-          <img src="gallery/photo_11.jpg" alt="Resizing & Alterations" loading="lazy" />
+          <img src="gallery/photo_30.jpg" alt="Resizing & Alterations" loading="lazy" style="filter:brightness(1.08) saturate(1.05);" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="2" y="8" width="20" height="8" rx="1.5"/><line x1="5" y1="8" x2="5" y2="12"/><line x1="8" y1="8" x2="8" y2="11"/><line x1="11" y1="8" x2="11" y2="12"/><line x1="14" y1="8" x2="14" y2="11"/><line x1="17" y1="8" x2="17" y2="12"/></svg>
@@ -1320,9 +1541,9 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-3" href="#contact">
+      <a class="service-card reveal reveal-delay-3" href="services.html">
         <div class="service-card-img">
-          <img src="gallery/photo_21.jpg" alt="Zipper & Repairs" loading="lazy" />
+          <img src="gallery/photo_21.jpg" alt="Zipper & Repairs" loading="lazy" style="filter:brightness(1.15) saturate(1.5) contrast(1.12);" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 21l13-13"/><path d="M15 6c1.5-2 4-2 5 .5s0 4.5-2 5"/><circle cx="4" cy="20" r="2"/></svg>
@@ -1332,9 +1553,9 @@
           <span class="service-link">Get a quote →</span>
         </div>
       </a>
-      <a class="service-card reveal reveal-delay-4" href="#contact">
+      <a class="service-card reveal reveal-delay-4" href="services.html">
         <div class="service-card-img">
-          <img src="gallery/photo_27.jpg" alt="Leather Work" loading="lazy" />
+          <img src="gallery/photo_27.jpg" alt="Leather Work" loading="lazy" style="filter:brightness(1.15) saturate(1.4) contrast(1.15);" />
         </div>
         <div class="service-card-body">
           <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 19c0-5.5 2-14 4-14s4 8.5 4 14"/><ellipse cx="12" cy="19" rx="4" ry="1.5"/><circle cx="10" cy="9" r=".7" fill="currentColor" stroke="none"/><circle cx="13" cy="7" r=".7" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r=".7" fill="currentColor" stroke="none"/></svg>
@@ -1349,6 +1570,7 @@
 
   <!-- ─── VALUE PROPOSITIONS ───────────────────────────────────────────── -->
   <section class="value-props" id="about">
+    <div class="sec-wm" aria-hidden="true" style="width:260px;bottom:-40px;left:-50px;transform:rotate(-8deg);"><img src="logo_graphic.png" alt="" /></div>
     <div class="value-props-inner">
       <div class="value-prop reveal">
         <svg class="value-prop-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><circle cx="16" cy="16" r="11"/><path d="M16 9v2m0 10v2"/><path d="M12 13h6a2 2 0 010 4h-4a2 2 0 000 4h6"/></svg>
@@ -1373,6 +1595,7 @@
 
   <!-- ─── REVIEWS ───────────────────────────────────────────────────────── -->
   <section class="reviews" id="reviews">
+    <div class="sec-wm" aria-hidden="true" style="width:300px;top:50%;right:-60px;transform:translateY(-50%) rotate(6deg);"><img src="logo_graphic.png" alt="" /></div>
     <div class="reviews-header reveal">
       <div class="reviews-badge">
         <div class="reviews-rating-block">
@@ -1569,116 +1792,60 @@
     </div>
   </section>
 
-  <!-- ─── OUR WORK GALLERY ──────────────────────────────────────────────── -->
-  <section class="gallery" id="gallery" style="padding:0;">
-    <div class="gallery-header reveal">
-      <p class="section-label">Our Work</p>
-      <h2 class="section-headline" style="margin-bottom:0">
-        Craftsmanship<br><em>you can see</em>
-      </h2>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item reveal">
-        <img src="gallery/photo_26.jpg" alt="Suit on mannequin" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Suit Tailoring</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-1">
-        <img src="gallery/photo_25.jpg" alt="Alliston sign" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Our Studio</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-1">
-        <img src="gallery/photo_19.jpg" alt="Bridal gown" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Gown</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-3">
-        <img src="gallery/photo_13.jpg" alt="Bridal party" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Party</span></div>
-      </div>
-      <div class="gallery-item reveal">
-        <img src="gallery/photo_15.jpg" alt="Wedding dress fitting" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Bridal Fitting</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-1">
-        <img src="gallery/photo_11.jpg" alt="Suit fitting" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Custom Fit</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-2">
-        <img src="gallery/photo_06.jpg" alt="Studio interior" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Our Studio</span></div>
-      </div>
-      <div class="gallery-item reveal">
-        <img src="gallery/photo_07.jpg" alt="Formalwear" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Formalwear</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-1">
-        <img src="gallery/photo_00.jpg" alt="Readers Choice Award 2025" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Readers' Choice 2025</span></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-2">
-        <img src="gallery/photo_03.jpg" alt="Before and after transformation" loading="lazy" />
-        <div class="gallery-item-overlay"><span class="gallery-item-caption">Transformation</span></div>
-      </div>
-    </div>
-  </section>
+  <!-- gallery section removed — will be added as a separate page -->
 
   <!-- ─── PRICING ───────────────────────────────────────────────────────── -->
   <section class="pricing" id="pricing">
-    <p class="section-label reveal">Transparent Pricing</p>
+    <div class="sec-wm" aria-hidden="true" style="width:280px;bottom:-50px;left:-40px;transform:rotate(-15deg);"><img src="logo_graphic.png" alt="" /></div>
+    <p class="section-label reveal">Pricing</p>
     <h2 class="section-headline reveal reveal-delay-1">
-      Starting prices<br><em>for common alterations</em>
+      Every quote, unique<br><em>to your garment</em>
     </h2>
     <div class="pricing-grid">
       <div class="pricing-card reveal reveal-delay-1">
         <span class="pricing-service">Bridal &amp; Formal</span>
         <h3 class="pricing-name">Bridal Alterations</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>65</div>
+        <div class="pricing-custom">Custom Quote</div>
         <p class="pricing-desc">Wedding gowns, bridesmaid dresses, and formal gowns. Bustles, corset adjustments, and full hem work.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-2">
         <span class="pricing-service">Prom</span>
         <h3 class="pricing-name">Prom Alterations</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>45</div>
+        <div class="pricing-custom">Custom Quote</div>
         <p class="pricing-desc">Prom dresses and suits tailored to fit perfectly. Hemming, taking in, and last-minute adjustments welcome.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-3">
         <span class="pricing-service">Tailoring</span>
-        <h3 class="pricing-name">Suit Jacket</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>40</div>
+        <h3 class="pricing-name">Suit Tailoring</h3>
+        <div class="pricing-custom">Custom Quote</div>
         <p class="pricing-desc">Sleeve shortening, chest suppression, and collar adjustments. Off-the-rack jackets made to measure.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-4">
         <span class="pricing-service">Dry Cleaning</span>
-        <h3 class="pricing-name">Dry Cleaning</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>15</div>
+        <h3 class="pricing-name">Dry<br>Cleaning</h3>
+        <div class="pricing-custom">Custom Quote</div>
         <p class="pricing-desc">Professional dry cleaning per item. Suits, gowns, delicate fabrics, and everyday wear returned fresh and pressed.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-1">
         <span class="pricing-service">Alterations</span>
-        <h3 class="pricing-name">Take In / Let Out</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>35</div>
+        <h3 class="pricing-name">Resizing &amp; Alterations</h3>
+        <div class="pricing-custom">Custom Quote</div>
         <p class="pricing-desc">Waist, seat, side seams, and shoulders. Full-body fit adjustments across all garment types.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-2">
         <span class="pricing-service">Repairs</span>
-        <h3 class="pricing-name">Zipper Replacement</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>20</div>
+        <h3 class="pricing-name">Zipper &amp; Repairs</h3>
+        <div class="pricing-custom">Custom Quote</div>
         <p class="pricing-desc">All zipper types: invisible, exposed, separating, and coil. Pants, dresses, and jackets.</p>
       </div>
       <div class="pricing-card reveal reveal-delay-3">
         <span class="pricing-service">Hemming</span>
-        <h3 class="pricing-name">Pant Hem</h3>
-        <div class="pricing-from">Starting from</div>
-        <div class="pricing-price"><sup>$</sup>15</div>
-        <p class="pricing-desc">Single-layer cuffed or plain hem. Includes original hem preservation on premium trousers.</p>
+        <h3 class="pricing-name">Hemming</h3>
+        <div class="pricing-custom">Custom Quote</div>
+        <p class="pricing-desc">Pants, skirts, dresses, and coats hemmed to the exact length you need. Cuffed, blind, or original-hem preservation.</p>
       </div>
     </div>
-    <p class="pricing-note reveal">All pricing varies by garment complexity and fabric. <a href="#contact" style="color:var(--sage);text-decoration:none">Contact us for a free estimate →</a></p>
+    <p class="pricing-note reveal">Every garment is different — pricing reflects the fabric, complexity, and time required. <a href="#contact" style="color:var(--sage);text-decoration:none">Get your free estimate →</a></p>
   </section>
 
   <!-- ─── PROMISES ──────────────────────────────────────────────────────── -->
@@ -1691,7 +1858,7 @@
       <div class="promise-card reveal reveal-delay-1">
         <svg class="promise-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><circle cx="16" cy="16" r="11"/><polyline points="16,9 16,16 20,20"/></svg>
         <h3 class="promise-title">Quick Turnaround</h3>
-        <p class="promise-desc">Most alterations ready in 3–5 business days. Rush service available — just ask at booking.</p>
+        <p class="promise-desc">Most alterations ready in 1–3 business days. Rush service available — just ask at booking.</p>
       </div>
       <div class="promise-card reveal reveal-delay-2">
         <svg class="promise-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--sage)"><path d="M16 3l2 8h8l-6.5 5 2.5 8L16 19l-6 5 2.5-8L6 11h8z"/></svg>
@@ -1728,6 +1895,7 @@
 
   <!-- ─── CONTACT ───────────────────────────────────────────────────────── -->
   <section class="contact" id="contact">
+    <div class="sec-wm" aria-hidden="true" style="width:340px;top:50%;left:50%;transform:translate(-50%,-50%) rotate(20deg);"><img src="logo_graphic.png" alt="" /></div>
     <h2 class="contact-headline reveal">
       Ready for<br>the <em>perfect</em><br>fit?
     </h2>
@@ -1737,7 +1905,7 @@
     <div class="contact-info reveal reveal-delay-2">
       <div class="contact-item">
         <span class="contact-label">Address</span>
-        <span class="contact-value">176 Victoria St E<br>Alliston, ON L9R 1H3</span>
+        <span class="contact-value">176 Victoria St E<br>Alliston, ON L9R 1K6</span>
       </div>
       <div class="contact-item">
         <span class="contact-label">Phone</span>
@@ -1775,7 +1943,7 @@
             <span class="map-detail-icon">📍</span>
             <div>
               <p class="map-detail-label">Address</p>
-              <p class="map-detail-value">176 Victoria St E<br>Alliston, ON L9R 1H3</p>
+              <p class="map-detail-value">176 Victoria St E<br>Alliston, ON L9R 1K6</p>
             </div>
           </div>
           <div class="map-detail-row">
@@ -1889,6 +2057,161 @@
     window.addEventListener('scroll', () => {
       nav.style.backdropFilter = window.scrollY > 40 ? 'blur(16px)' : 'blur(10px)';
     }, { passive: true });
+
+    /* ─── HERO VISUAL SLIDESHOW ────────────────────────────────────── */
+    (function() {
+      const slides   = document.querySelectorAll('.hv-slide');
+      const dots     = document.querySelectorAll('.hv-dot');
+      const labelEl  = document.getElementById('hvLabel');
+      const counterEl= document.getElementById('hvCounter');
+      const progEl   = document.getElementById('hvProgress');
+      const panel    = document.getElementById('heroVisual');
+      const DURATION = 2800;
+      let current = 0, timer;
+
+      function restartProgress() {
+        progEl.style.animation = 'none';
+        void progEl.offsetWidth;
+        progEl.style.animation = 'hvProg ' + DURATION + 'ms linear forwards';
+        // also sync dot animation
+        document.querySelectorAll('.hv-dot.active::after').forEach(el => { el.style.animationDuration = DURATION + 'ms'; });
+      }
+
+      function goTo(idx) {
+        const prev = current;
+        current = idx;
+
+        // sweep line
+        panel.classList.remove('sweeping');
+        void panel.offsetWidth;
+        panel.classList.add('sweeping');
+
+        // swap slides
+        slides[prev].classList.remove('active');
+        slides[current].classList.add('active');
+
+        // label: slide out, update, slide in
+        labelEl.classList.add('out');
+        setTimeout(() => {
+          labelEl.textContent = slides[current].dataset.label;
+          labelEl.classList.remove('out');
+        }, 380);
+
+        // counter flip
+        counterEl.classList.add('flip');
+        setTimeout(() => {
+          counterEl.textContent = String(current + 1).padStart(2, '0');
+          counterEl.classList.remove('flip');
+        }, 280);
+
+        // dots
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+
+        restartProgress();
+      }
+
+      function next() { goTo((current + 1) % slides.length); }
+
+      function startTimer() {
+        clearInterval(timer);
+        timer = setInterval(next, DURATION);
+      }
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => { if (i !== current) { goTo(i); startTimer(); } });
+      });
+
+      panel.addEventListener('mouseenter', () => clearInterval(timer));
+      panel.addEventListener('mouseleave', startTimer);
+
+      restartProgress();
+      startTimer();
+    })();
+
+    // ── Floating review rotator ───────────────────────────────────────────
+    (function () {
+      const cards = Array.from(document.querySelectorAll('.hr-card'));
+      if (!cards.length) return;
+      const HOLD = 6000;
+      const IN   = 500;
+      const OUT  = 380;
+      let idx = 0;
+      let timers = [];   // track all pending timeouts so we can cancel them
+
+      function clearTimers() {
+        timers.forEach(t => clearTimeout(t));
+        timers = [];
+      }
+
+      function showCard(i) {
+        const card = cards[i];
+        const fill = card.querySelector('.hr-bar-fill');
+
+        card.classList.remove('hr-hide');
+        card.classList.add('hr-show');
+
+        if (fill) {
+          fill.style.transition = 'none';
+          fill.style.width = '0%';
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            fill.style.transition = 'width ' + HOLD + 'ms linear';
+            fill.style.width = '100%';
+          }));
+        }
+
+        const t1 = setTimeout(() => {
+          card.classList.add('hr-hide');
+          card.classList.remove('hr-show');
+          const t2 = setTimeout(() => {
+            card.classList.remove('hr-hide');
+            idx = (idx + 1) % cards.length;
+            showCard(idx);
+          }, OUT + 60);
+          timers.push(t2);
+        }, HOLD + IN);
+        timers.push(t1);
+      }
+
+      const reviewsEl = document.querySelector('.hero-reviews');
+      let reviewsActive = false;
+
+      function activateReviews() {
+        if (reviewsActive) return;
+        reviewsActive = true;
+        idx = 0;
+        reviewsEl.style.visibility = 'visible';
+        showCard(0);
+      }
+
+      function deactivateReviews() {
+        if (!reviewsActive) return;
+        reviewsActive = false;
+        clearTimers();
+        reviewsEl.style.visibility = 'hidden';
+        cards.forEach(c => {
+          c.classList.remove('hr-show', 'hr-hide');
+          const fill = c.querySelector('.hr-bar-fill');
+          if (fill) { fill.style.transition = 'none'; fill.style.width = '0%'; }
+        });
+        idx = 0;
+      }
+
+      function getThreshold() {
+        const topbar = document.querySelector('.topbar');
+        const locbar = document.querySelector('.location-bar');
+        return (topbar ? topbar.offsetHeight : 0) + (locbar ? locbar.offsetHeight : 0);
+      }
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > getThreshold()) {
+          activateReviews();
+        } else {
+          deactivateReviews();
+        }
+      }, { passive: true });
+
+      reviewsEl.style.visibility = 'hidden';
+    })();
   </script>
 </body>
 </html>
