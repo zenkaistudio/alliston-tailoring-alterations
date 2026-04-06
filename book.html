@@ -421,7 +421,7 @@
   </section>
 
   <!-- ─── FORM + SIDEBAR ────────────────────────────────────────────────── -->
-  <section class="form-section">
+  <section class="form-section" id="booking">
 
     <!-- Sidebar info -->
     <div>
@@ -615,6 +615,22 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal, .step-item').forEach(el => io.observe(el));
+
+    /* ─── PRE-SELECT SERVICE FROM URL PARAM ────────────────────────────── */
+    (function () {
+      const param = new URLSearchParams(window.location.search).get('service');
+      if (!param) return;
+      const sel = document.getElementById('book-service');
+      const decoded = decodeURIComponent(param);
+      for (const opt of sel.options) {
+        if (opt.value === decoded || opt.text === decoded) {
+          opt.selected = true;
+          break;
+        }
+      }
+      // Scroll smoothly to booking form
+      document.getElementById('booking').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    })();
 
     /* ─── BOOKING FORM ──────────────────────────────────────────────────── */
     function handleBooking(e) {
