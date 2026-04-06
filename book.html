@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Fitting — Alliston Tailoring & Alterations</title>
+  <meta name="description" content="Book a free fitting consultation at Alliston Tailoring & Alterations in Alliston, Ontario. Walk-ins welcome. Expert alterations since 2008." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #FBF0E6;
+      --bg-card:  #F5E4D2;
+      --bg-hover: #EDD7C5;
+      --beige:    #3A2418;
+      --sage:     #B83232;
+      --dim:      #9B7B6E;
+      --white:    #1A0A04;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+
+    body {
+      background: linear-gradient(155deg, #F8CBAB 0%, #FBF0E4 52%, #FEF7F0 100%);
+      background-attachment: fixed;
+      color: var(--beige);
+      font-family: var(--sans);
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.035; pointer-events: none; z-index: 9999;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 900;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      padding: clamp(16px,2vw,24px) clamp(24px,5vw,72px);
+      background: rgba(253,244,236,.93); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(80,45,30,.06);
+      transition: padding .4s cubic-bezier(.16,1,.3,1), box-shadow .4s, backdrop-filter .3s;
+    }
+    nav.scrolled {
+      padding-top: clamp(8px,1vw,12px);
+      padding-bottom: clamp(8px,1vw,12px);
+      box-shadow: 0 2px 24px rgba(58,36,24,.1);
+    }
+    .nav-logo {
+      text-decoration: none; display: flex; align-items: center;
+      background: #fff; padding: 5px 12px; border-radius: 3px;
+    }
+    .nav-logo img { height: clamp(32px,3.2vw,46px); width: auto; display: block; }
+    .nav-title {
+      font-family: var(--serif); font-size: clamp(16px,1.6vw,22px);
+      font-weight: 300; font-style: italic; letter-spacing: 0.08em;
+      color: var(--white); opacity: 0.88;
+      text-align: center; white-space: nowrap; pointer-events: none;
+    }
+    @media (max-width: 900px) { .nav-title { display: none; } }
+    .nav-links {
+      display: flex; gap: clamp(20px,2.5vw,40px); list-style: none; align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--sans); font-size: clamp(10px,0.9vw,12px); font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--beige);
+      text-decoration: none; position: relative; padding-bottom: 3px; transition: color .25s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: var(--sage);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform .4s cubic-bezier(.76,0,.24,1);
+    }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-back {
+      font-size: clamp(9px,0.8vw,11px) !important; letter-spacing: .18em;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .nav-back::before { content: '←'; font-size: .9em; }
+    .nav-book {
+      font-family: var(--sans); font-size: clamp(9px,0.8vw,11px) !important;
+      font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--bg) !important; background: var(--beige);
+      padding: 10px 22px !important; text-decoration: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      line-height: 1; transition: background .25s; white-space: nowrap;
+    }
+    .nav-book:hover { background: var(--sage); color: var(--bg) !important; }
+    .nav-book::after { display: none !important; }
+    @media (max-width: 768px) {
+      .nav-links li:not(:last-child):not(:first-child) { display: none; }
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────────────────── */
+    .book-hero {
+      padding: clamp(80px,12vh,140px) clamp(24px,5vw,72px) clamp(60px,8vh,100px);
+      border-bottom: 1px solid rgba(80,45,30,.07);
+    }
+    .book-hero-eyebrow {
+      font-family: var(--sans); font-size: clamp(10px,.85vw,13px);
+      letter-spacing: .3em; text-transform: uppercase; color: var(--sage);
+      margin-bottom: clamp(16px,2.5vh,28px);
+      opacity: 0; animation: fadeUp .8s ease forwards .2s;
+    }
+    .book-hero-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(48px,6.5vw,100px);
+      line-height: 0.92; letter-spacing: -.02em;
+      color: var(--white); max-width: 800px;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(.16,1,.3,1) forwards .4s;
+    }
+    .book-hero-headline em { font-style: italic; color: var(--beige); }
+    .book-hero-sub {
+      margin-top: clamp(24px,3.5vh,40px);
+      max-width: 560px; font-size: clamp(13px,1.3vw,17px);
+      font-weight: 300; color: var(--dim); line-height: 1.75;
+      opacity: 0; animation: fadeUp 1s ease forwards .7s;
+    }
+
+    /* ─── STEPS ────────────────────────────────────────────────────────── */
+    .steps-section {
+      background: var(--bg-card);
+      border-top: 1px solid rgba(80,45,30,.07);
+      border-bottom: 1px solid rgba(80,45,30,.07);
+      padding: clamp(60px,9vh,100px) clamp(24px,5vw,72px);
+    }
+    .steps-label {
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .35em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: clamp(40px,5vh,64px);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .steps-label::after { content: ''; display: block; height: 1px; width: 36px; background: var(--sage); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0; position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute; top: 24px; left: calc(16.66% + 12px); right: calc(16.66% + 12px);
+      height: 1px; background: rgba(80,45,30,.15);
+    }
+    .step-item {
+      padding: 0 clamp(20px,3vw,48px) 0 0;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .step-item:last-child { padding-right: 0; }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid rgba(80,45,30,.2); background: var(--bg-card);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 22px; font-weight: 300;
+      color: var(--sage); flex-shrink: 0; position: relative; z-index: 1;
+      transition: background .3s, border-color .3s;
+    }
+    .step-item:hover .step-num { background: var(--sage); border-color: var(--sage); color: var(--bg); }
+    .step-title {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(20px,2.2vw,30px); color: var(--white); line-height: 1.15;
+      margin-top: 8px;
+    }
+    .step-desc {
+      font-size: clamp(12px,1.1vw,14px); font-weight: 300; color: var(--dim); line-height: 1.7;
+    }
+    @media (max-width: 768px) {
+      .steps-grid { grid-template-columns: 1fr; gap: 40px; }
+      .steps-grid::before { display: none; }
+      .step-item { padding-right: 0; }
+    }
+
+    /* ─── FORM SECTION ─────────────────────────────────────────────────── */
+    .form-section {
+      padding: clamp(80px,12vh,140px) clamp(24px,5vw,72px);
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(48px,7vw,120px);
+      align-items: start;
+    }
+    @media (max-width: 900px) { .form-section { grid-template-columns: 1fr; } }
+
+    .form-side-label {
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .35em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: clamp(12px,2vh,20px);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .form-side-label::after { content: ''; display: block; height: 1px; width: 36px; background: var(--sage); }
+    .form-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(32px,4vw,60px); color: var(--white); line-height: 1.05;
+      letter-spacing: -.02em; margin-bottom: clamp(24px,3vh,36px);
+    }
+    .form-headline em { font-style: italic; color: var(--beige); }
+    .form-intro {
+      font-size: clamp(13px,1.2vw,16px); font-weight: 300; color: var(--dim);
+      line-height: 1.8; margin-bottom: clamp(32px,4vh,48px);
+    }
+
+    /* Bring checklist */
+    .bring-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .bring-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 20px; background: var(--bg-card);
+      border: 1px solid rgba(80,45,30,.08);
+      transition: border-color .25s, background .25s;
+    }
+    .bring-item:hover { border-color: rgba(184,50,50,.2); background: var(--bg-hover); }
+    .bring-icon { color: var(--sage); flex-shrink: 0; margin-top: 2px; font-size: 15px; }
+    .bring-text { font-size: clamp(12px,1.1vw,14px); font-weight: 300; color: var(--beige); line-height: 1.6; }
+    .bring-text strong { font-weight: 500; color: var(--white); display: block; margin-bottom: 2px; font-size: .95em; letter-spacing: .03em; }
+
+    /* Turnaround table */
+    .turnaround-title {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(20px,2vw,28px); color: var(--white);
+      margin: clamp(36px,5vh,56px) 0 clamp(16px,2vh,24px);
+    }
+    .turnaround-table { width: 100%; border-collapse: collapse; }
+    .turnaround-table th {
+      font-family: var(--sans); font-size: clamp(9px,.75vw,10px);
+      letter-spacing: .25em; text-transform: uppercase; color: var(--sage);
+      text-align: left; padding: 10px 0; border-bottom: 1px solid rgba(80,45,30,.12);
+    }
+    .turnaround-table td {
+      font-size: clamp(12px,1.1vw,14px); font-weight: 300; color: var(--dim);
+      padding: 13px 0; border-bottom: 1px solid rgba(80,45,30,.06); vertical-align: top;
+    }
+    .turnaround-table td:first-child { color: var(--beige); font-weight: 400; }
+    .rush-badge {
+      display: inline-block; font-size: 9px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--sage);
+      border: 1px solid rgba(184,50,50,.3); padding: 2px 7px; margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* Form */
+    .booking-form { display: flex; flex-direction: column; gap: 0; }
+    .field-group {
+      position: relative; margin-bottom: 20px;
+    }
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      width: 100%; background: var(--bg-card); border: 1px solid rgba(80,45,30,.15);
+      outline: none; padding: 22px 16px 10px; font-family: var(--sans); font-size: 14px;
+      color: var(--white); transition: border-color .25s, background .25s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      border-color: rgba(184,50,50,.5); background: var(--bg);
+    }
+    .field-group textarea { resize: vertical; min-height: 110px; }
+    .field-group label {
+      position: absolute; top: 10px; left: 16px;
+      font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--sage); pointer-events: none;
+      transition: none;
+    }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+
+    .form-submit {
+      background: var(--beige); color: var(--bg); border: none; cursor: pointer;
+      padding: 16px 36px; font-family: var(--sans); font-size: clamp(10px,.9vw,12px);
+      font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+      transition: background .3s, transform .25s; align-self: flex-start;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: var(--sage); transform: translateY(-2px); }
+    .form-note {
+      font-size: 11px; color: var(--dim); margin-top: 14px; font-style: italic; opacity: .8;
+    }
+    .form-success {
+      display: none; font-family: var(--serif); font-size: 22px;
+      color: var(--sage); margin-top: 16px; font-style: italic;
+    }
+
+    /* ─── HOURS / MAP STRIP ─────────────────────────────────────────────── */
+    .location-strip {
+      background: var(--bg-card);
+      border-top: 1px solid rgba(80,45,30,.07);
+      border-bottom: 1px solid rgba(80,45,30,.07);
+      padding: clamp(48px,7vh,80px) clamp(24px,5vw,72px);
+      display: grid; grid-template-columns: 1fr 1.6fr;
+      gap: clamp(32px,5vw,72px); align-items: start;
+    }
+    @media (max-width: 768px) { .location-strip { grid-template-columns: 1fr; } }
+    .location-info-label {
+      font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 16px;
+    }
+    .location-info-headline {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(26px,2.8vw,40px); color: var(--white); line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .location-info-headline em { font-style: italic; }
+    .hours-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+    .hours-table tr td {
+      padding: 9px 0; font-size: clamp(13px,1.1vw,15px); color: var(--dim);
+      border-bottom: 1px solid rgba(80,45,30,.06);
+    }
+    .hours-table tr td:first-child { color: var(--beige); font-weight: 500; width: 40%; }
+    .location-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: clamp(9px,.8vw,11px); letter-spacing: .22em; text-transform: uppercase;
+      color: var(--sage); text-decoration: none;
+      border: 1px solid rgba(184,50,50,.25); padding: 10px 22px;
+      transition: background .25s, color .25s;
+    }
+    .location-cta:hover { background: var(--sage); color: var(--bg); }
+    .map-embed {
+      border: 1px solid rgba(80,45,30,.1); overflow: hidden;
+      aspect-ratio: 4/3; line-height: 0;
+    }
+    .map-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    /* ─── FOOTER ────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--beige); color: var(--bg);
+      padding: clamp(24px,3vh,36px) clamp(24px,5vw,72px);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: 11px; letter-spacing: .1em; color: rgba(251,240,230,.5);
+    }
+    .footer-back {
+      font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(251,240,230,.6); text-decoration: none; transition: color .2s;
+    }
+    .footer-back:hover { color: rgba(251,240,230,1); }
+
+    /* ─── KEYFRAMES ─────────────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── REVEAL ────────────────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ─── STEP ANIMATION ────────────────────────────────────────────────── */
+    .step-item .step-num {
+      opacity: 0; transform: scale(.7);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1), background .3s, border-color .3s, color .3s;
+    }
+    .step-item.visible .step-num { opacity: 1; transform: scale(1); }
+    .step-item { transition-delay: 0s; }
+    .step-item:nth-child(2) .step-num { transition-delay: .18s; }
+    .step-item:nth-child(3) .step-num { transition-delay: .36s; }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─────────────────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.jpg" alt="Alliston Tailoring & Alterations" />
+    </a>
+    <span class="nav-title">Alliston Tailoring &amp; Alterations</span>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-back">Back to Site</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="tel:+17052508500" class="nav-book">Call Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────────────── -->
+  <section class="book-hero">
+    <p class="book-hero-eyebrow">Free Consultation · Walk-ins Welcome</p>
+    <h1 class="book-hero-headline">
+      Book your<br><em>fitting</em>
+    </h1>
+    <p class="book-hero-sub">
+      Every great garment starts with a conversation. Drop in or send us a message — we'll assess the work, walk you through our process, and give you a quote before we begin. No obligation.
+    </p>
+  </section>
+
+  <!-- ─── STEPS ─────────────────────────────────────────────────────────── -->
+  <section class="steps-section">
+    <p class="steps-label reveal">How It Works</p>
+    <div class="steps-grid">
+      <div class="step-item reveal">
+        <div class="step-num">1</div>
+        <h3 class="step-title">Book or Walk In</h3>
+        <p class="step-desc">Send us your request below or simply walk into the studio during business hours. No appointment necessary for most alterations.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-2">
+        <div class="step-num">2</div>
+        <h3 class="step-title">Your Fitting</h3>
+        <p class="step-desc">We assess your garment, discuss what needs to be done, and give you a clear quote upfront. Bring the shoes and undergarments you plan to wear.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-4">
+        <div class="step-num">3</div>
+        <h3 class="step-title">Perfect Pickup</h3>
+        <p class="step-desc">We'll contact you when your garment is ready — usually 3 to 5 business days. Every piece comes with our 30-day fit guarantee.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FORM + SIDEBAR ────────────────────────────────────────────────── -->
+  <section class="form-section">
+
+    <!-- Sidebar info -->
+    <div>
+      <p class="form-side-label reveal">Before You Come In</p>
+      <h2 class="form-headline reveal reveal-delay-1">
+        What to<br><em>bring</em>
+      </h2>
+      <ul class="bring-list">
+        <li class="bring-item reveal reveal-delay-1">
+          <span class="bring-icon">✦</span>
+          <div class="bring-text">
+            <strong>Your Garment</strong>
+            The item you'd like altered — cleaned if possible.
+          </div>
+        </li>
+        <li class="bring-item reveal reveal-delay-2">
+          <span class="bring-icon">✦</span>
+          <div class="bring-text">
+            <strong>Proper Shoes</strong>
+            The exact shoes you plan to wear — especially important for hem work.
+          </div>
+        </li>
+        <li class="bring-item reveal reveal-delay-3">
+          <span class="bring-icon">✦</span>
+          <div class="bring-text">
+            <strong>Shapewear / Undergarments</strong>
+            For bridal and formal gowns, wear what you'll wear on the day.
+          </div>
+        </li>
+        <li class="bring-item reveal reveal-delay-4">
+          <span class="bring-icon">✦</span>
+          <div class="bring-text">
+            <strong>Inspiration (optional)</strong>
+            Photos or references for custom or reconstruction work are always welcome.
+          </div>
+        </li>
+      </ul>
+
+      <h3 class="turnaround-title reveal">Typical Turnaround Times</h3>
+      <table class="turnaround-table reveal reveal-delay-1">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Standard</th>
+            <th>Rush <span class="rush-badge">ask us</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pant / Skirt Hem</td>
+            <td>2 – 3 days</td>
+            <td>Same day</td>
+          </tr>
+          <tr>
+            <td>Take In / Let Out</td>
+            <td>3 – 5 days</td>
+            <td>1 – 2 days</td>
+          </tr>
+          <tr>
+            <td>Suit Tailoring</td>
+            <td>5 – 7 days</td>
+            <td>3 days</td>
+          </tr>
+          <tr>
+            <td>Zipper Replacement</td>
+            <td>2 – 4 days</td>
+            <td>Next day</td>
+          </tr>
+          <tr>
+            <td>Bridal Alterations</td>
+            <td>1 – 2 weeks</td>
+            <td>Ask us</td>
+          </tr>
+          <tr>
+            <td>Leather Work</td>
+            <td>5 – 7 days</td>
+            <td>Ask us</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Booking form -->
+    <div>
+      <p class="form-side-label reveal">Send a Request</p>
+      <h2 class="form-headline reveal reveal-delay-1">
+        Request a<br><em>consultation</em>
+      </h2>
+      <p class="form-intro reveal reveal-delay-2">Fill out the form below and we'll be in touch to confirm your appointment. Prefer to call? Reach us at <a href="tel:+17052508500" style="color:var(--sage);text-decoration:none;">(705) 250-8500</a>.</p>
+
+      <form class="booking-form reveal reveal-delay-2" id="bookingForm" onsubmit="handleBooking(event)">
+        <div class="field-row">
+          <div class="field-group">
+            <label for="book-name">Full Name</label>
+            <input type="text" id="book-name" name="name" required autocomplete="name" />
+          </div>
+          <div class="field-group">
+            <label for="book-phone">Phone</label>
+            <input type="tel" id="book-phone" name="phone" required autocomplete="tel" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="book-email">Email Address</label>
+          <input type="email" id="book-email" name="email" required autocomplete="email" />
+        </div>
+        <div class="field-group">
+          <label for="book-service">Service Needed</label>
+          <select id="book-service" name="service" required>
+            <option value="" disabled selected></option>
+            <option>Bridal Alterations</option>
+            <option>Prom Alterations</option>
+            <option>Suit Tailoring</option>
+            <option>Hemming</option>
+            <option>Resizing / Take In / Let Out</option>
+            <option>Zipper Replacement</option>
+            <option>Leather Work</option>
+            <option>Dry Cleaning</option>
+            <option>Not sure — need a quote</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="book-date">Preferred Date</label>
+            <input type="date" id="book-date" name="date" />
+          </div>
+          <div class="field-group">
+            <label for="book-time">Preferred Time</label>
+            <select id="book-time" name="time">
+              <option value="" disabled selected></option>
+              <option>Morning (9am – 12pm)</option>
+              <option>Afternoon (12pm – 3pm)</option>
+              <option>Late Afternoon (3pm – 6pm)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="book-notes">Notes or Details</label>
+          <textarea id="book-notes" name="notes" placeholder=" "></textarea>
+        </div>
+        <button class="form-submit" type="submit">Send Request</button>
+        <p class="form-note">We'll confirm your appointment by phone or email within one business day.</p>
+        <p class="form-success" id="bookingSuccess">Thank you — we'll be in touch soon. ✦</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── LOCATION STRIP ───────────────────────────────────────────────── -->
+  <div class="location-strip">
+    <div>
+      <p class="location-info-label reveal">Our Studio</p>
+      <h3 class="location-info-headline reveal reveal-delay-1">
+        Visit us in<br><em>Alliston</em>
+      </h3>
+      <table class="hours-table reveal reveal-delay-2">
+        <tr><td>Monday – Friday</td><td>9:00 am – 6:00 pm</td></tr>
+        <tr><td>Saturday</td><td>10:00 am – 4:00 pm</td></tr>
+        <tr><td>Sunday</td><td>Closed</td></tr>
+      </table>
+      <a href="https://maps.google.com/?q=176+Victoria+St+E+Alliston+Ontario" target="_blank" rel="noopener" class="location-cta reveal reveal-delay-3">
+        Get Directions →
+      </a>
+    </div>
+    <div class="map-embed reveal reveal-delay-2">
+      <iframe
+        src="https://maps.google.com/maps?q=176+Victoria+St+E,+Alliston,+ON&t=&z=17&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Alliston Tailoring & Alterations location"></iframe>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────────────── -->
+  <footer>
+    <p class="footer-copy">&copy; 2026 Alliston Tailoring &amp; Alterations · 176 Victoria St E, Alliston, ON</p>
+    <a href="index.html" class="footer-back">← Back to main site</a>
+  </footer>
+
+  <script>
+    /* ─── NAV SHRINK ────────────────────────────────────────────────────── */
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────────────────── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal, .step-item').forEach(el => io.observe(el));
+
+    /* ─── BOOKING FORM ──────────────────────────────────────────────────── */
+    function handleBooking(e) {
+      e.preventDefault();
+      const form = document.getElementById('bookingForm');
+      const btn  = form.querySelector('.form-submit');
+      const success = document.getElementById('bookingSuccess');
+      const data = Object.fromEntries(new FormData(form));
+
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      fetch('https://formspree.io/f/allistontailoring@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...data,
+          _subject: `Booking Request – ${data.service || 'General'} – Alliston Tailoring`
+        })
+      })
+      .then(() => {
+        form.querySelectorAll('input, select, textarea, button').forEach(el => el.style.display = 'none');
+        success.style.display = 'block';
+      })
+      .catch(() => {
+        btn.textContent = 'Send Request';
+        btn.disabled = false;
+        alert('Something went wrong. Please call us at (705) 250-8500.');
+      });
+    }
+  </script>
+</body>
+</html>
