@@ -1007,6 +1007,18 @@
       .hero-scroll { display: none; }
 
       .services-grid { grid-template-columns: 1fr; }
+      .service-card { position: relative; }
+      .service-card-body {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        padding: 0 24px; gap: 0;
+      }
+      .service-icon, .service-num, .service-desc, .service-link { display: none; }
+      .service-name {
+        text-align: center;
+        color: #F5EDE4;
+        text-shadow: 0 2px 12px rgba(0,0,0,.55);
+      }
       .value-props-inner { grid-template-columns: 1fr; }
       .value-prop { border-right: none; padding-right: 0; border-bottom: 1px solid rgba(80,45,30,.08); padding-bottom: clamp(28px,4vh,40px); }
       .value-prop:last-child { border-bottom: none; }
