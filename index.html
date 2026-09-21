@@ -1017,9 +1017,11 @@
       .service-name {
         text-align: center;
         font-size: clamp(26px, 7vw, 32px);
-        color: #F8CBAB;
+        color: #F5EDE4;
         text-shadow: 0 2px 10px rgba(0,0,0,.5);
       }
+      .services-grid .service-card:first-child .service-card-img img { filter: grayscale(1); }
+      .services-grid .service-card:first-child .service-name { color: #1A0A04; text-shadow: 0 2px 10px rgba(255,255,255,.35); }
       .value-props-inner { grid-template-columns: 1fr; }
       .value-prop { border-right: none; padding-right: 0; border-bottom: 1px solid rgba(80,45,30,.08); padding-bottom: clamp(28px,4vh,40px); }
       .value-prop:last-child { border-bottom: none; }
